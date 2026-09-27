@@ -1,0 +1,8 @@
+class Solution:
+    def minOperations(self, nums: List[int], k: int) -> int:
+        u = (2 << k) - 2  # 1~k
+        s, n = 0, len(nums)
+        for i in range(n - 1, -1, -1):
+            s |= 1 << nums[i]
+            if (s & u) == u:
+                return n - i
