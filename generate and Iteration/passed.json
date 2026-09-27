@@ -1,0 +1,1034 @@
+[
+  {
+    "problem_id": "2520",
+    "problem_slug": "count-the-digits-that-divide-a-number",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def countDigits(self, num: int) -> int:\n        # Convert num to string to iterate over its digits\n        digits = str(num)\n        count = 0\n        for ch in digits:\n            digit = int(ch)\n            # Since constraints guarantee no zero digit, digit > 0\n            if num % digit == 0:\n                count += 1\n        return count",
+    "estimated_date": "2023-01-01"
+  },
+  {
+    "problem_id": "2521",
+    "problem_slug": "distinct-prime-factors-of-product-of-array",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def distinctPrimeFactors(self, nums: List[int]) -> int:\n        # Precompute all primes up to 1000 (max possible value of nums[i])\n        MAX_NUM = 1000\n        is_prime = [True] * (MAX_NUM + 1)\n        is_prime[0] = is_prime[1] = False\n        for i in range(2, int(MAX_NUM**0.5) + 1):\n            if is_prime[i]:\n                for j in range(i*i, MAX_NUM + 1, i):\n                    is_prime[j] = False\n        primes = [i for i in range(2, MAX_NUM + 1) if is_prime[i]]\n\n        prime_factors = set()\n\n        for num in nums:\n            temp = num\n            # Divide by each prime\n            for p in primes:\n                if p * p > temp:\n                    break\n                if temp % p == 0:\n                    prime_factors.add(p)\n                    while temp % p == 0:\n                        temp //= p\n            # If something remains, it's a prime factor\n            if temp > 1:\n                prime_factors.add(temp)\n\n        return len(prime_factors)",
+    "estimated_date": "2023-01-01"
+  },
+  {
+    "problem_id": "2523",
+    "problem_slug": "closest-prime-numbers-in-range",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def closestPrimes(self, left: int, right: int) -> List[int]:\n        # Sieve of Eratosthenes to find all primes up to right\n        if right < 2:\n            return [-1, -1]\n        \n        is_prime = [True] * (right + 1)\n        is_prime[0] = is_prime[1] = False\n        \n        for i in range(2, int(right ** 0.5) + 1):\n            if is_prime[i]:\n                # Mark multiples of i as non-prime\n                start = i * i\n                step = i\n                for j in range(start, right + 1, step):\n                    is_prime[j] = False\n        \n        # Collect primes in [left, right]\n        primes = [i for i in range(left, right + 1) if is_prime[i]]\n        \n        # If fewer than 2 primes, no valid pair\n        if len(primes) < 2:\n            return [-1, -1]\n        \n        # Find the pair with minimum difference\n        min_diff = float('inf')\n        ans = [-1, -1]\n        for i in range(len(primes) - 1):\n            diff = primes[i+1] - primes[i]\n            if diff < min_diff:\n                min_diff = diff\n                ans = [primes[i], primes[i+1]]\n        \n        return ans",
+    "estimated_date": "2023-01-01"
+  },
+  {
+    "problem_id": "2529",
+    "problem_slug": "maximum-count-of-positive-integer-and-negative-integer",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\nimport bisect\n\nclass Solution:\n    def maximumCount(self, nums: List[int]) -> int:\n        # Find the index of the first non-negative element (first element >= 0)\n        neg_count = bisect.bisect_left(nums, 0)\n        # Find the index of the first positive element (first element > 0)\n        pos_count = len(nums) - bisect.bisect_right(nums, 0)\n        # Return the maximum of the two counts\n        return max(neg_count, pos_count)",
+    "estimated_date": "2023-01-08"
+  },
+  {
+    "problem_id": "2530",
+    "problem_slug": "maximal-score-after-applying-k-operations",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\nimport heapq\n\nclass Solution:\n    def maxKelements(self, nums: List[int], k: int) -> int:\n        # Use a max-heap by storing negative values\n        max_heap = [-x for x in nums]\n        heapq.heapify(max_heap)\n        score = 0\n        \n        for _ in range(k):\n            # Pop the largest element (most negative)\n            largest = -heapq.heappop(max_heap)\n            score += largest\n            # Replace with ceil(largest / 3)\n            new_val = (largest + 2) // 3  # integer ceiling without math.ceil\n            heapq.heappush(max_heap, -new_val)\n        \n        return score",
+    "estimated_date": "2023-01-08"
+  },
+  {
+    "problem_id": "2535",
+    "problem_slug": "difference-between-element-sum-and-digit-sum-of-an-array",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def differenceOfSum(self, nums: List[int]) -> int:\n        # Compute element sum\n        element_sum = sum(nums)\n        \n        # Compute digit sum\n        digit_sum = 0\n        for num in nums:\n            n = num\n            while n > 0:\n                digit_sum += n % 10\n                n //= 10\n        \n        # Return absolute difference\n        return abs(element_sum - digit_sum)",
+    "estimated_date": "2023-01-15"
+  },
+  {
+    "problem_id": "2540",
+    "problem_slug": "minimum-common-value",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def getCommon(self, nums1: List[int], nums2: List[int]) -> int:\n        i, j = 0, 0\n        while i < len(nums1) and j < len(nums2):\n            if nums1[i] == nums2[j]:\n                return nums1[i]\n            elif nums1[i] < nums2[j]:\n                i += 1\n            else:\n                j += 1\n        return -1",
+    "estimated_date": "2023-01-15"
+  },
+  {
+    "problem_id": "2544",
+    "problem_slug": "alternating-digit-sum",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def alternateDigitSum(self, n: int) -> int:\n        s = str(n)\n        total = 0\n        for i, ch in enumerate(s):\n            digit = int(ch)\n            if i % 2 == 0:\n                total += digit\n            else:\n                total -= digit\n        return total",
+    "estimated_date": "2023-01-22"
+  },
+  {
+    "problem_id": "2545",
+    "problem_slug": "sort-the-students-by-their-kth-score",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def sortTheStudents(self, score: List[List[int]], k: int) -> List[List[int]]:\n        # Sort the rows in descending order based on the k-th exam score\n        return sorted(score, key=lambda row: row[k], reverse=True)",
+    "estimated_date": "2023-01-22"
+  },
+  {
+    "problem_id": "2547",
+    "problem_slug": "minimum-cost-to-split-an-array",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def minCost(self, nums: List[int], k: int) -> int:\n        n = len(nums)\n        dp = [float('inf')] * (n + 1)\n        dp[0] = 0\n        \n        for i in range(1, n + 1):\n            freq = {}\n            dup = 0\n            # expand subarray from i-1 leftwards\n            for j in range(i - 1, -1, -1):\n                val = nums[j]\n                f = freq.get(val, 0)\n                if f == 1:\n                    dup += 2          # element now appears twice → both copies kept\n                elif f >= 2:\n                    dup += 1          # one more copy of a duplicate\n                # f == 0: element appears once, not kept → no change\n                freq[val] = f + 1\n                cost = dp[j] + k + dup\n                if cost < dp[i]:\n                    dp[i] = cost\n        \n        return dp[n]",
+    "estimated_date": "2023-01-22"
+  },
+  {
+    "problem_id": "2554",
+    "problem_slug": "maximum-number-of-integers-to-choose-from-a-range-i",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def maxCount(self, banned: List[int], n: int, maxSum: int) -> int:\n        banned_set = set(banned)  # O(1) lookup\n        count = 0\n        current_sum = 0\n        for i in range(1, n + 1):\n            if i in banned_set:\n                continue\n            if current_sum + i > maxSum:\n                break  # since numbers are increasing, further ones will only make sum larger\n            current_sum += i\n            count += 1\n        return count",
+    "estimated_date": "2023-01-29"
+  },
+  {
+    "problem_id": "2555",
+    "problem_slug": "maximize-win-from-two-segments",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "",
+    "estimated_date": "2023-01-29"
+  },
+  {
+    "problem_id": "2558",
+    "problem_slug": "take-gifts-from-the-richest-pile",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\nimport math\nimport heapq\n\nclass Solution:\n    def pickGifts(self, gifts: List[int], k: int) -> int:\n        # Convert to max-heap by storing negative values\n        max_heap = [-g for g in gifts]\n        heapq.heapify(max_heap)\n        \n        for _ in range(k):\n            # Get the current maximum gift count (negative)\n            largest = -heapq.heappop(max_heap)\n            # Reduce to floor(sqrt(largest))\n            reduced = int(math.isqrt(largest))  # math.isqrt returns integer floor sqrt\n            # Push back the reduced value\n            heapq.heappush(max_heap, -reduced)\n        \n        # Sum all remaining gifts\n        total = 0\n        while max_heap:\n            total += -heapq.heappop(max_heap)\n        return total",
+    "estimated_date": "2023-02-05"
+  },
+  {
+    "problem_id": "2562",
+    "problem_slug": "find-the-array-concatenation-value",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def findTheArrayConcVal(self, nums: List[int]) -> int:\n        total = 0\n        left, right = 0, len(nums) - 1\n        \n        while left < right:\n            # Concatenate first and last element\n            concat_val = int(str(nums[left]) + str(nums[right]))\n            total += concat_val\n            left += 1\n            right -= 1\n        \n        # If there's a middle element left\n        if left == right:\n            total += nums[left]\n        \n        return total",
+    "estimated_date": "2023-02-12"
+  },
+  {
+    "problem_id": "2568",
+    "problem_slug": "minimum-impossible-or",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def minImpossibleOR(self, nums: List[int]) -> int:\n        # Store all numbers in a set for O(1) lookups\n        seen = set(nums)\n        # Start with the smallest power of two (1)\n        power = 1\n        # Find the smallest power of two that is not in the array\n        while power in seen:\n            power <<= 1  # multiply by 2\n        return power",
+    "estimated_date": "2023-02-12"
+  },
+  {
+    "problem_id": "2574",
+    "problem_slug": "left-and-right-sum-differences",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def leftRightDifference(self, nums: List[int]) -> List[int]:\n        n = len(nums)\n        leftSum = [0] * n\n        rightSum = [0] * n\n        \n        # Compute left sums\n        for i in range(1, n):\n            leftSum[i] = leftSum[i-1] + nums[i-1]\n        \n        # Compute right sums\n        for i in range(n-2, -1, -1):\n            rightSum[i] = rightSum[i+1] + nums[i+1]\n        \n        # Compute absolute differences\n        answer = [abs(leftSum[i] - rightSum[i]) for i in range(n)]\n        return answer",
+    "estimated_date": "2023-02-19"
+  },
+  {
+    "problem_id": "2575",
+    "problem_slug": "find-the-divisibility-array-of-a-string",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def divisibilityArray(self, word: str, m: int) -> List[int]:\n        \"\"\"\n        Returns an array of length n where the i-th element is 1 if the\n        prefix word[0..i] interpreted as a number is divisible by m, else 0.\n        \"\"\"\n        n = len(word)\n        res = [0] * n\n        cur = 0  # remainder of the current prefix modulo m\n        \n        for i, ch in enumerate(word):\n            cur = (cur * 10 + int(ch)) % m\n            if cur == 0:\n                res[i] = 1\n            # else res[i] stays 0\n        \n        return res",
+    "estimated_date": "2023-02-26"
+  },
+  {
+    "problem_id": "2582",
+    "problem_slug": "pass-the-pillow",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def passThePillow(self, n: int, time: int) -> int:\n        # Each full cycle (1 -> n -> 1) takes 2*(n-1) seconds\n        cycle = 2 * (n - 1)\n        t = time % cycle\n        \n        if t < n:  # moving forward from 1\n            return 1 + t\n        else:      # moving backward from n\n            return n - (t - (n - 1))",
+    "estimated_date": "2023-03-05"
+  },
+  {
+    "problem_id": "2583",
+    "problem_slug": "kth-largest-sum-in-a-binary-tree",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from collections import deque\nfrom typing import Optional, List\n\n# Definition for a binary tree node.\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def kthLargestLevelSum(self, root: Optional[TreeNode], k: int) -> int:\n        if not root:\n            return -1\n        \n        # BFS to compute level sums\n        level_sums: List[int] = []\n        q = deque([root])\n        \n        while q:\n            level_size = len(q)\n            curr_sum = 0\n            for _ in range(level_size):\n                node = q.popleft()\n                curr_sum += node.val\n                if node.left:\n                    q.append(node.left)\n                if node.right:\n                    q.append(node.right)\n            level_sums.append(curr_sum)\n        \n        # If there are fewer than k levels, return -1\n        if len(level_sums) < k:\n            return -1\n        \n        # Sort in descending order and get the k-th largest (1-indexed)\n        level_sums.sort(reverse=True)\n        return level_sums[k - 1]",
+    "estimated_date": "2023-03-05"
+  },
+  {
+    "problem_id": "2584",
+    "problem_slug": "split-the-array-to-make-coprime-products",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "from typing import List\nfrom collections import defaultdict\n\nclass Solution:\n    def findValidSplit(self, nums: List[int]) -> int:\n        if not nums:\n            return -1\n        \n        # Step 1: Precompute smallest prime factor (SPF) up to max(nums)\n        max_val = max(nums)\n        spf = list(range(max_val + 1))\n        for i in range(2, int(max_val ** 0.5) + 1):\n            if spf[i] == i:  # i is prime\n                for j in range(i * i, max_val + 1, i):\n                    if spf[j] == j:\n                        spf[j] = i\n        \n        # Helper to get distinct prime factors of a number using SPF\n        def get_distinct_primes(x: int) -> set:\n            factors = set()\n            while x > 1:\n                p = spf[x]\n                factors.add(p)\n                while x % p == 0:\n                    x //= p\n            return factors\n        \n        # Step 2: Count total occurrences of each prime across all numbers\n        total_count = defaultdict(int)\n        for num in nums:\n            for p in get_distinct_primes(num):\n                total_count[p] += 1\n        \n        # Step 3: Scan left to right, maintain left counts and conflict count\n        left_count = defaultdict(int)\n        conflict = 0  # number of primes that appear in both sides\n        n = len(nums)\n        \n        for i in range(n - 1):  # i from 0 to n-2 inclusive\n            for p in get_distinct_primes(nums[i]):\n                prev = left_count.get(p, 0)\n                total = total_count[p]\n                # Update left count\n                left_count[p] = prev + 1\n                # Update conflict count\n                if prev == 0:\n                    # p appears for the first time in left\n                    if total > 1:  # it also appears somewhere in the right\n                        conflict += 1\n                else:\n                    # p already appears in left at least once\n                    if prev == total - 1:\n                        # after this increment, all occurrences of p are in left\n                        if total > 1:\n                            conflict -= 1\n            # After processing this number, check if no conflict\n            if conflict == 0:\n                return i\n        \n        return -1",
+    "estimated_date": "2023-03-05"
+  },
+  {
+    "problem_id": "2600",
+    "problem_slug": "k-items-with-the-maximum-sum",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def kItemsWithMaximumSum(self, numOnes: int, numZeros: int, numNegOnes: int, k: int) -> int:\n        # Take as many 1's as possible\n        take_ones = min(numOnes, k)\n        total = take_ones\n        k -= take_ones\n        \n        # Then take 0's (they don't change the sum)\n        take_zeros = min(numZeros, k)\n        k -= take_zeros\n        \n        # Finally, take -1's if needed\n        take_neg = min(numNegOnes, k)\n        total -= take_neg\n        \n        return total",
+    "estimated_date": "2023-03-26"
+  },
+  {
+    "problem_id": "2614",
+    "problem_slug": "prime-in-diagonal",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def diagonalPrime(self, nums: List[List[int]]) -> int:\n        def is_prime(num: int) -> bool:\n            if num <= 1:\n                return False\n            if num <= 3:\n                return True\n            if num % 2 == 0 or num % 3 == 0:\n                return False\n            i = 5\n            while i * i <= num:\n                if num % i == 0 or num % (i + 2) == 0:\n                    return False\n                i += 6\n            return True\n\n        n = len(nums)\n        max_prime = 0\n        for i in range(n):\n            # main diagonal\n            val = nums[i][i]\n            if is_prime(val):\n                max_prime = max(max_prime, val)\n            # anti-diagonal\n            val = nums[i][n - 1 - i]\n            if is_prime(val):\n                max_prime = max(max_prime, val)\n        return max_prime",
+    "estimated_date": "2023-04-09"
+  },
+  {
+    "problem_id": "2615",
+    "problem_slug": "sum-of-distances",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\nfrom collections import defaultdict\n\nclass Solution:\n    def distance(self, nums: List[int]) -> List[int]:\n        \"\"\"\n        For each element at index i, compute the sum of absolute differences\n        to all other indices with the same value.\n        \"\"\"\n        n = len(nums)\n        result = [0] * n\n        \n        # Group indices by value\n        groups = defaultdict(list)\n        for idx, val in enumerate(nums):\n            groups[val].append(idx)\n        \n        # For each group of identical values, compute distances efficiently\n        for indices in groups.values():\n            m = len(indices)\n            if m == 1:\n                continue  # only one occurrence, distance remains 0\n            \n            # Compute prefix sums to allow O(1) distance calculation per index\n            prefix = [0] * (m + 1)  # prefix[0] = 0, prefix[i] = sum of first i indices\n            for i in range(m):\n                prefix[i+1] = prefix[i] + indices[i]\n            \n            # For each index in this group, compute left and right contributions\n            for p, idx in enumerate(indices):\n                # left part: indices[0..p-1]\n                # sum of left distances = idx * p - sum of left indices\n                left_sum = idx * p - prefix[p]\n                # right part: indices[p+1..m-1]\n                # sum of right distances = (sum of right indices) - idx * (m - 1 - p)\n                right_sum = (prefix[m] - prefix[p+1]) - idx * (m - 1 - p)\n                result[idx] = left_sum + right_sum\n        \n        return result",
+    "estimated_date": "2023-04-09"
+  },
+  {
+    "problem_id": "2617",
+    "problem_slug": "minimum-number-of-visited-cells-in-a-grid",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "from typing import List\nfrom collections import deque\n\nclass Solution:\n    def minimumVisitedCells(self, grid: List[List[int]]) -> int:\n        m, n = len(grid), len(grid[0])\n        # distance matrix, -1 means unvisited\n        dist = [[-1] * n for _ in range(m)]\n        # DSU structures for skipping visited cells\n        # row_next[i][c] = next unvisited column >= c in row i (sentinel n)\n        # col_next[j][r] = next unvisited row >= r in column j (sentinel m)\n        row_next = [list(range(n + 1)) for _ in range(m)]\n        col_next = [list(range(m + 1)) for _ in range(n)]\n\n        # iterative find with path compression\n        def find(arr, x):\n            while arr[x] != x:\n                arr[x] = arr[arr[x]]\n                x = arr[x]\n            return x\n\n        # start cell\n        dist[0][0] = 1\n        # mark (0,0) visited in both structures\n        row_next[0][0] = find(row_next[0], 1)\n        col_next[0][0] = find(col_next[0], 1)\n\n        q = deque()\n        q.append((0, 0))\n\n        while q:\n            i, j = q.popleft()\n            d = dist[i][j]\n            # reached target ?\n            if i == m - 1 and j == n - 1:\n                return d\n\n            # ----- rightward moves -----\n            max_j = min(n - 1, j + grid[i][j])\n            if max_j > j:\n                cur = find(row_next[i], j + 1)\n                while cur <= max_j:\n                    # visit cell (i, cur)\n                    dist[i][cur] = d + 1\n                    q.append((i, cur))\n                    # remove from row and column DSU structures\n                    row_next[i][cur] = find(row_next[i], cur + 1)\n                    col_next[cur][i] = find(col_next[cur], i + 1)\n                    # next unvisited column\n                    cur = find(row_next[i], cur + 1)\n\n            # ----- downward moves -----\n            max_i = min(m - 1, i + grid[i][j])\n            if max_i > i:\n                cur = find(col_next[j], i + 1)\n                while cur <= max_i:\n                    # visit cell (cur, j)\n                    dist[cur][j] = d + 1\n                    q.append((cur, j))\n                    # remove from row and column DSU structures\n                    row_next[cur][j] = find(row_next[cur], j + 1)\n                    col_next[j][cur] = find(col_next[j], cur + 1)\n                    # next unvisited row\n                    cur = find(col_next[j], cur + 1)\n\n        # not reachable\n        return -1",
+    "estimated_date": "2023-04-09"
+  },
+  {
+    "problem_id": "2643",
+    "problem_slug": "row-with-maximum-ones",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def rowAndMaximumOnes(self, mat: List[List[int]]) -> List[int]:\n        max_count = 0\n        best_row = 0\n        for i, row in enumerate(mat):\n            count = sum(row)\n            if count > max_count:\n                max_count = count\n                best_row = i\n        return [best_row, max_count]",
+    "estimated_date": "2023-04-16"
+  },
+  {
+    "problem_id": "2644",
+    "problem_slug": "find-the-maximum-divisibility-score",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def maxDivScore(self, nums: List[int], divisors: List[int]) -> int:\n        max_score = -1\n        best_divisor = None\n        \n        for divisor in divisors:\n            count = 0\n            for num in nums:\n                if num % divisor == 0:\n                    count += 1\n            # Update best_divisor based on higher score or tie-breaking with smaller divisor\n            if count > max_score or (count == max_score and divisor < best_divisor):\n                max_score = count\n                best_divisor = divisor\n        \n        return best_divisor",
+    "estimated_date": "2023-04-16"
+  },
+  {
+    "problem_id": "2651",
+    "problem_slug": "calculate-delayed-arrival-time",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def findDelayedArrivalTime(self, arrivalTime: int, delayedTime: int) -> int:\n        # Compute the delayed arrival time in 24-hour format\n        return (arrivalTime + delayedTime) % 24",
+    "estimated_date": "2023-04-23"
+  },
+  {
+    "problem_id": "2652",
+    "problem_slug": "sum-multiples",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def sumOfMultiples(self, n: int) -> int:\n        total = 0\n        for i in range(1, n + 1):\n            if i % 3 == 0 or i % 5 == 0 or i % 7 == 0:\n                total += i\n        return total",
+    "estimated_date": "2023-04-23"
+  },
+  {
+    "problem_id": "2653",
+    "problem_slug": "sliding-subarray-beauty",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def getSubarrayBeauty(self, nums: List[int], k: int, x: int) -> List[int]:\n        # freq[i] will store count of negative number (i - 50)\n        freq = [0] * 50   # indices 0..49 represent -50..-1\n        total_neg = 0\n        n = len(nums)\n        \n        # Build initial window\n        for i in range(k):\n            if nums[i] < 0:\n                idx = nums[i] + 50\n                freq[idx] += 1\n                total_neg += 1\n        \n        res = []\n        # helper to compute beauty for current window\n        def beauty():\n            if total_neg < x:\n                return 0\n            cum = 0\n            for idx in range(50):\n                cum += freq[idx]\n                if cum >= x:\n                    return idx - 50   # map back to actual negative value\n            return 0  # should never reach here\n        \n        res.append(beauty())\n        \n        # Slide the window\n        for i in range(1, n - k + 1):\n            # remove left element\n            left = nums[i - 1]\n            if left < 0:\n                idx = left + 50\n                freq[idx] -= 1\n                total_neg -= 1\n            # add right element\n            right = nums[i + k - 1]\n            if right < 0:\n                idx = right + 50\n                freq[idx] += 1\n                total_neg += 1\n            res.append(beauty())\n        \n        return res",
+    "estimated_date": "2023-04-23"
+  },
+  {
+    "problem_id": "2655",
+    "problem_slug": "find-maximal-uncovered-ranges",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def findMaximalUncoveredRanges(self, n: int, ranges: List[List[int]]) -> List[List[int]]:\n        # If no ranges are given, the whole array is uncovered\n        if not ranges:\n            return [[0, n - 1]]\n        \n        # 1. Sort ranges by start\n        ranges.sort(key=lambda x: x[0])\n        \n        # 2. Merge overlapping or adjacent ranges\n        merged = []\n        cur_start, cur_end = ranges[0]\n        for start, end in ranges[1:]:\n            if start <= cur_end + 1:  # overlap or adjacent\n                cur_end = max(cur_end, end)\n            else:\n                merged.append([cur_start, cur_end])\n                cur_start, cur_end = start, end\n        merged.append([cur_start, cur_end])\n        \n        # 3. Find uncovered gaps\n        result = []\n        # Gap before first covered range\n        if merged[0][0] > 0:\n            result.append([0, merged[0][0] - 1])\n        \n        # Gaps between consecutive covered ranges\n        for i in range(1, len(merged)):\n            prev_end = merged[i-1][1]\n            curr_start = merged[i][0]\n            if curr_start > prev_end + 1:\n                result.append([prev_end + 1, curr_start - 1])\n        \n        # Gap after last covered range\n        if merged[-1][1] < n - 1:\n            result.append([merged[-1][1] + 1, n - 1])\n        \n        return result",
+    "estimated_date": "2023-04-23"
+  },
+  {
+    "problem_id": "2670",
+    "problem_slug": "find-the-distinct-difference-array",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def distinctDifferenceArray(self, nums: List[int]) -> List[int]:\n        n = len(nums)\n        # suffix_distinct[i] = number of distinct elements in nums[i..n-1]\n        suffix_distinct = [0] * n\n        seen = set()\n        for i in range(n - 1, -1, -1):\n            seen.add(nums[i])\n            suffix_distinct[i] = len(seen)\n\n        result = []\n        seen_prefix = set()\n        for i in range(n):\n            seen_prefix.add(nums[i])\n            prefix_count = len(seen_prefix)\n            suffix_count = suffix_distinct[i + 1] if i + 1 < n else 0\n            result.append(prefix_count - suffix_count)\n\n        return result",
+    "estimated_date": "2023-05-07"
+  },
+  {
+    "problem_id": "2678",
+    "problem_slug": "number-of-senior-citizens",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def countSeniors(self, details: List[str]) -> int:\n        \"\"\"\n        Count passengers older than 60 years based on the encoded details string.\n        \"\"\"\n        count = 0\n        for detail in details:\n            # Extract age: characters at indices 11 and 12 (0-indexed)\n            age = int(detail[11:13])\n            if age > 60:\n                count += 1\n        return count",
+    "estimated_date": "2023-05-07"
+  },
+  {
+    "problem_id": "2684",
+    "problem_slug": "maximum-number-of-moves-in-a-grid",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def maxMoves(self, grid: List[List[int]]) -> int:\n        m = len(grid)\n        n = len(grid[0])\n        # dp[r][c] = maximum moves starting from cell (r,c) moving rightwards\n        dp = [[0] * n for _ in range(m)]\n        \n        # Process columns from right to left (except the last column)\n        for c in range(n - 2, -1, -1):\n            for r in range(m):\n                val = grid[r][c]\n                best = 0\n                # Check three possible moves to the next column\n                for dr in (-1, 0, 1):\n                    nr = r + dr\n                    if 0 <= nr < m and grid[nr][c+1] > val:\n                        best = max(best, 1 + dp[nr][c+1])\n                dp[r][c] = best\n        \n        # Answer is the maximum moves from any cell in the first column\n        return max(dp[r][0] for r in range(m))",
+    "estimated_date": "2023-05-14"
+  },
+  {
+    "problem_id": "2696",
+    "problem_slug": "minimum-string-length-after-removing-substrings",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def minLength(self, s: str) -> int:\n        stack = []\n        for c in s:\n            stack.append(c)\n            # Check if the last two characters form \"AB\" or \"CD\"\n            if len(stack) >= 2:\n                if (stack[-2] == 'A' and stack[-1] == 'B') or (stack[-2] == 'C' and stack[-1] == 'D'):\n                    stack.pop()\n                    stack.pop()\n        return len(stack)",
+    "estimated_date": "2023-05-21"
+  },
+  {
+    "problem_id": "2697",
+    "problem_slug": "lexicographically-smallest-palindrome",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def makeSmallestPalindrome(self, s: str) -> str:\n        # Convert to list for mutability\n        chars = list(s)\n        n = len(s)\n        # Process each pair from both ends\n        for i in range(n // 2):\n            j = n - 1 - i\n            # Choose the smaller character to minimize lexicographic order\n            if chars[i] != chars[j]:\n                # Set both to the minimum of the two\n                min_char = min(chars[i], chars[j])\n                chars[i] = min_char\n                chars[j] = min_char\n        # Convert back to string\n        return ''.join(chars)",
+    "estimated_date": "2023-05-21"
+  },
+  {
+    "problem_id": "2706",
+    "problem_slug": "buy-two-chocolates",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def buyChoco(self, prices: List[int], money: int) -> int:\n        # Sort the prices to get the two smallest\n        prices.sort()\n        # The sum of the two cheapest chocolates\n        min_sum = prices[0] + prices[1]\n        # If we can afford them, return leftover; otherwise return original money\n        return money - min_sum if min_sum <= money else money",
+    "estimated_date": "2023-05-21"
+  },
+  {
+    "problem_id": "2708",
+    "problem_slug": "maximum-strength-of-a-group",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def maxStrength(self, nums: List[int]) -> int:\n        n = len(nums)\n        best = float('-inf')\n        # enumerate all non-empty subsets\n        for mask in range(1, 1 << n):\n            prod = 1\n            for i in range(n):\n                if mask & (1 << i):\n                    prod *= nums[i]\n            if prod > best:\n                best = prod\n        return best",
+    "estimated_date": "2023-05-21"
+  },
+  {
+    "problem_id": "2736",
+    "problem_slug": "maximum-sum-queries",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "from typing import List\nimport bisect\n\nclass Solution:\n    def maximumSumQueries(self, nums1: List[int], nums2: List[int], queries: List[List[int]]) -> List[int]:\n        n = len(nums1)\n        # Create list of (nums1, nums2, sum)\n        pairs = [(nums1[i], nums2[i], nums1[i] + nums2[i]) for i in range(n)]\n        # Sort pairs by nums1 descending\n        pairs.sort(key=lambda x: -x[0])\n        \n        # Collect all possible nums2 values for compression: both from pairs and from query yi\n        all_vals = set()\n        for _, v, _ in pairs:\n            all_vals.add(v)\n        for _, yi in queries:\n            all_vals.add(yi)\n        sorted_vals = sorted(all_vals)          # ascending order\n        m = len(sorted_vals)\n        \n        # Segment tree for range maximum (suffix query)\n        seg = [-1] * (4 * m)\n        \n        def seg_update(node, l, r, idx, val):\n            if l == r:\n                seg[node] = max(seg[node], val)\n                return\n            mid = (l + r) // 2\n            if idx <= mid:\n                seg_update(node*2, l, mid, idx, val)\n            else:\n                seg_update(node*2+1, mid+1, r, idx, val)\n            seg[node] = max(seg[node*2], seg[node*2+1])\n        \n        def seg_query(node, l, r, ql, qr):\n            if ql > r or qr < l:\n                return -1\n            if ql <= l and r <= qr:\n                return seg[node]\n            mid = (l + r) // 2\n            left = seg_query(node*2, l, mid, ql, qr)\n            right = seg_query(node*2+1, mid+1, r, ql, qr)\n            return max(left, right)\n        \n        # Sort queries by xi descending while keeping original index\n        q_with_idx = [(xi, yi, i) for i, (xi, yi) in enumerate(queries)]\n        q_with_idx.sort(key=lambda x: -x[0])\n        \n        ans = [0] * len(queries)\n        p = 0  # pointer over sorted pairs\n        \n        for xi, yi, idx in q_with_idx:\n            # Add all pairs with nums1 >= xi\n            while p < n and pairs[p][0] >= xi:\n                _, v, s = pairs[p]\n                comp_idx = bisect.bisect_left(sorted_vals, v)\n                seg_update(1, 0, m-1, comp_idx, s)\n                p += 1\n            # Query for nums2 >= yi\n            comp_y = bisect.bisect_left(sorted_vals, yi)\n            if comp_y < m:\n                best = seg_query(1, 0, m-1, comp_y, m-1)\n                ans[idx] = best\n            else:\n                ans[idx] = -1\n        \n        return ans",
+    "estimated_date": "2023-06-11"
+  },
+  {
+    "problem_id": "2737",
+    "problem_slug": "find-the-closest-marked-node",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\nimport heapq\n\nclass Solution:\n    def minimumDistance(self, n: int, edges: List[List[int]], s: int, marked: List[int]) -> int:\n        # Build adjacency list\n        adj = [[] for _ in range(n)]\n        for u, v, w in edges:\n            adj[u].append((v, w))\n        \n        # Convert marked list to set for fast lookup\n        marked_set = set(marked)\n        \n        # Dijkstra\n        INF = float('inf')\n        dist = [INF] * n\n        dist[s] = 0\n        heap = [(0, s)]  # (distance, node)\n        \n        while heap:\n            d, u = heapq.heappop(heap)\n            if d > dist[u]:\n                continue\n            # If this node is marked, we have found the minimum distance\n            if u in marked_set:\n                return d\n            for v, w in adj[u]:\n                new_d = d + w\n                if new_d < dist[v]:\n                    dist[v] = new_d\n                    heapq.heappush(heap, (new_d, v))\n        \n        # No marked node reachable\n        return -1",
+    "estimated_date": "2023-06-11"
+  },
+  {
+    "problem_id": "2740",
+    "problem_slug": "find-the-value-of-the-partition",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def findValueOfPartition(self, nums: List[int]) -> int:\n        # Sort the array to bring close numbers together\n        nums.sort()\n        # Initialize the minimum difference to a large value\n        min_diff = float('inf')\n        # Scan consecutive pairs; the smallest difference is the answer\n        for i in range(len(nums) - 1):\n            diff = nums[i + 1] - nums[i]\n            if diff < min_diff:\n                min_diff = diff\n        return min_diff",
+    "estimated_date": "2023-06-18"
+  },
+  {
+    "problem_id": "2743",
+    "problem_slug": "count-substrings-without-repeating-character",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def numberOfSpecialSubstrings(self, s: str) -> int:\n        \"\"\"\n        Counts the number of substrings with all distinct characters.\n        Uses sliding window technique.\n        \"\"\"\n        last_seen = [-1] * 26  # last index where each character was seen\n        left = 0\n        total = 0\n\n        for right, ch in enumerate(s):\n            idx = ord(ch) - ord('a')\n            # If the character was seen in the current window, move left pointer\n            if last_seen[idx] >= left:\n                left = last_seen[idx] + 1\n            # Update the last seen index of the character\n            last_seen[idx] = right\n            # Number of special substrings ending at 'right' is the window size\n            total += right - left + 1\n\n        return total",
+    "estimated_date": "2023-06-18"
+  },
+  {
+    "problem_id": "2747",
+    "problem_slug": "count-zero-request-servers",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def countServers(self, n: int, logs: List[List[int]], x: int, queries: List[int]) -> List[int]:\n        # Sort logs by time\n        logs.sort(key=lambda t: t[1])\n        \n        # Pair queries with their original indices and sort by query time\n        sorted_queries = sorted([(q, i) for i, q in enumerate(queries)])\n        \n        # Frequency of each server in the current window\n        freq = [0] * (n + 1)  # servers are 1-indexed\n        active = 0  # number of distinct servers with at least one request in window\n        \n        left = 0   # left pointer for sliding window (inclusive)\n        right = 0  # right pointer (exclusive)\n        \n        ans = [0] * len(queries)\n        \n        for q, idx in sorted_queries:\n            # Expand window to include all logs with time <= q\n            while right < len(logs) and logs[right][1] <= q:\n                server = logs[right][0]\n                if freq[server] == 0:\n                    active += 1\n                freq[server] += 1\n                right += 1\n            \n            # Shrink window to exclude logs with time < q - x\n            while left < len(logs) and logs[left][1] < q - x:\n                server = logs[left][0]\n                freq[server] -= 1\n                if freq[server] == 0:\n                    active -= 1\n                left += 1\n            \n            # Number of servers that did not receive any request in [q-x, q]\n            ans[idx] = n - active\n        \n        return ans",
+    "estimated_date": "2023-06-18"
+  },
+  {
+    "problem_id": "2760",
+    "problem_slug": "longest-even-odd-subarray-with-threshold",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def longestAlternatingSubarray(self, nums: List[int], threshold: int) -> int:\n        n = len(nums)\n        max_len = 0\n        for l in range(n):\n            # Condition: first element even and <= threshold\n            if nums[l] % 2 == 0 and nums[l] <= threshold:\n                length = 1\n                # Try to extend the subarray to the right\n                for r in range(l + 1, n):\n                    # Check threshold and alternating parity\n                    if nums[r] > threshold:\n                        break\n                    if nums[r] % 2 == nums[r-1] % 2:\n                        break\n                    length += 1\n                max_len = max(max_len, length)\n        return max_len",
+    "estimated_date": "2023-07-02"
+  },
+  {
+    "problem_id": "2761",
+    "problem_slug": "prime-pairs-with-target-sum",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def findPrimePairs(self, n: int) -> List[List[int]]:\n        # No primes less than 2, so no pairs possible for n < 4 (except n=2? but we need x+y=2, x,y>=2? Actually x=1,y=1 but 1 is not prime)\n        if n < 4:\n            return []\n        \n        # Sieve of Eratosthenes up to n\n        is_prime = [True] * (n + 1)\n        is_prime[0] = is_prime[1] = False\n        for i in range(2, int(n**0.5) + 1):\n            if is_prime[i]:\n                for j in range(i*i, n+1, i):\n                    is_prime[j] = False\n        \n        result = []\n        # x <= y, so x <= n//2\n        for x in range(2, n//2 + 1):\n            y = n - x\n            if is_prime[x] and is_prime[y]:\n                result.append([x, y])\n        \n        return result",
+    "estimated_date": "2023-07-02"
+  },
+  {
+    "problem_id": "2766",
+    "problem_slug": "relocate-marbles",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def relocateMarbles(self, nums: List[int], moveFrom: List[int], moveTo: List[int]) -> List[int]:\n        # Use a set to track positions that have marbles\n        positions = set(nums)\n        \n        for f, t in zip(moveFrom, moveTo):\n            if f in positions:\n                positions.remove(f)\n                positions.add(t)\n        \n        return sorted(positions)",
+    "estimated_date": "2023-07-02"
+  },
+  {
+    "problem_id": "2778",
+    "problem_slug": "sum-of-squares-of-special-elements",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def sumOfSquares(self, nums: List[int]) -> int:\n        n = len(nums)\n        total = 0\n        # i is 1-indexed\n        for i in range(1, n + 1):\n            if n % i == 0:\n                total += nums[i - 1] ** 2\n        return total",
+    "estimated_date": "2023-07-16"
+  },
+  {
+    "problem_id": "2781",
+    "problem_slug": "length-of-the-longest-valid-substring",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def longestValidSubstring(self, word: str, forbidden: List[str]) -> int:\n        forbidden_set = set(forbidden)               # O(1) lookups\n        n = len(word)\n        left = 0\n        max_len = 0\n\n        for right in range(n):\n            # maximum left boundary required to exclude all forbidden substrings ending at `right`\n            max_left = left\n            window_len = right - left + 1\n            # only need to check the last up to 10 characters (max length of forbidden)\n            for i in range(1, min(10, window_len) + 1):\n                sub = word[right - i + 1 : right + 1]\n                if sub in forbidden_set:\n                    # move left to just after the start of this forbidden substring\n                    new_left = right - i + 2\n                    if new_left > max_left:\n                        max_left = new_left\n            left = max_left\n\n            # update the answer\n            cur_len = right - left + 1\n            if cur_len > max_len:\n                max_len = cur_len\n\n        return max_len",
+    "estimated_date": "2023-07-16"
+  },
+  {
+    "problem_id": "2785",
+    "problem_slug": "sort-vowels-in-a-string",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def sortVowels(self, s: str) -> str:\n        # Define vowels set (both lowercase and uppercase)\n        vowels = set('aeiouAEIOU')\n        \n        # Collect vowels from the string\n        vowel_list = [ch for ch in s if ch in vowels]\n        # Sort vowels by ASCII value (natural order for characters)\n        vowel_list.sort()\n        \n        # Build result using a list for mutability\n        result = []\n        vowel_idx = 0  # pointer to sorted vowels\n        \n        for ch in s:\n            if ch in vowels:\n                # Replace with next sorted vowel\n                result.append(vowel_list[vowel_idx])\n                vowel_idx += 1\n            else:\n                # Keep consonant unchanged\n                result.append(ch)\n        \n        # Join list into string\n        return ''.join(result)",
+    "estimated_date": "2023-07-16"
+  },
+  {
+    "problem_id": "2788",
+    "problem_slug": "split-strings-by-separator",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def splitWordsBySeparator(self, words: List[str], separator: str) -> List[str]:\n        \"\"\"\n        Splits each string in words by the given separator and returns\n        a list of non-empty resulting strings in order.\n        \"\"\"\n        result = []\n        for word in words:\n            # Split the word by the separator (literal string)\n            parts = word.split(separator)\n            for part in parts:\n                if part:  # Exclude empty strings\n                    result.append(part)\n        return result",
+    "estimated_date": "2023-07-23"
+  },
+  {
+    "problem_id": "2798",
+    "problem_slug": "number-of-employees-who-met-the-target",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def numberOfEmployeesWhoMetTarget(self, hours: List[int], target: int) -> int:\n        # Count employees whose hours are at least the target\n        return sum(1 for h in hours if h >= target)",
+    "estimated_date": "2023-07-30"
+  },
+  {
+    "problem_id": "2799",
+    "problem_slug": "count-complete-subarrays-in-an-array",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def countCompleteSubarrays(self, nums: List[int]) -> int:\n        n = len(nums)\n        total_distinct = len(set(nums))\n        \n        # Initialize frequency map and two pointers\n        freq = {}\n        left = 0\n        right = 0\n        distinct_in_window = 0\n        count = 0\n        \n        # Sliding window\n        while left < n:\n            # Expand window until we have all distinct values or reach end\n            while right < n and distinct_in_window < total_distinct:\n                val = nums[right]\n                if val in freq:\n                    freq[val] += 1\n                else:\n                    freq[val] = 1\n                    distinct_in_window += 1\n                right += 1\n            \n            # If window has all distinct, all subarrays starting at left ending at >= right-1 are complete\n            if distinct_in_window == total_distinct:\n                # right is the first index where window [left, right-1] has all distinct\n                # any subarray ending at index >= right-1 is complete\n                count += n - (right - 1)\n            \n            # Move left pointer: remove nums[left] from window\n            left_val = nums[left]\n            if left_val in freq:\n                freq[left_val] -= 1\n                if freq[left_val] == 0:\n                    del freq[left_val]\n                    distinct_in_window -= 1\n            left += 1\n        \n        return count",
+    "estimated_date": "2023-07-30"
+  },
+  {
+    "problem_id": "2807",
+    "problem_slug": "insert-greatest-common-divisors-in-linked-list",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "import math\nfrom typing import Optional\n\n# Definition for singly-linked list.\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\nclass Solution:\n    def insertGreatestCommonDivisors(self, head: Optional[ListNode]) -> Optional[ListNode]:\n        # If the list has only one node, no insertion needed.\n        if not head or not head.next:\n            return head\n        \n        curr = head\n        while curr and curr.next:\n            # Compute GCD of current node and next node.\n            gcd_val = math.gcd(curr.val, curr.next.val)\n            # Create new node with GCD value.\n            new_node = ListNode(gcd_val)\n            # Insert it between curr and curr.next.\n            new_node.next = curr.next\n            curr.next = new_node\n            # Move to the original next node (skip the newly inserted node).\n            curr = new_node.next\n        \n        return head",
+    "estimated_date": "2023-07-30"
+  },
+  {
+    "problem_id": "2813",
+    "problem_slug": "maximum-elegance-of-a-k-length-subsequence",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "from typing import List\nimport heapq\n\nclass Solution:\n    def findMaximumElegance(self, items: List[List[int]], k: int) -> int:\n        # Sort items by profit descending\n        items.sort(key=lambda x: -x[0])\n        \n        total_profit = 0\n        categories = set()\n        heap = []  # min-heap of profits of duplicate items (categories with more than one selected)\n        selected_count = 0\n        best = 0\n        \n        for profit, category in items:\n            if selected_count < k:\n                # Add the item to the current selection\n                total_profit += profit\n                selected_count += 1\n                if category in categories:\n                    heapq.heappush(heap, profit)\n                else:\n                    categories.add(category)\n                if selected_count == k:\n                    # We have exactly k items, update best\n                    best = max(best, total_profit + len(categories) ** 2)\n            else:\n                # We already have k items, try to replace the worst duplicate\n                if category not in categories and heap:\n                    min_dup = heap[0]\n                    # Improvement = new profit - old profit + (new_categories^2 - old_categories^2)\n                    # = profit - min_dup + (2*len(categories) + 1)\n                    improvement = profit - min_dup + 2 * len(categories) + 1\n                    if improvement > 0:\n                        # Perform the replacement\n                        total_profit = total_profit - min_dup + profit\n                        heapq.heappop(heap)\n                        categories.add(category)\n                        best = max(best, total_profit + len(categories) ** 2)\n        \n        return best",
+    "estimated_date": "2023-08-06"
+  },
+  {
+    "problem_id": "2815",
+    "problem_slug": "max-pair-sum-in-an-array",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def maxSum(self, nums: List[int]) -> int:\n        # Dictionary mapping max digit to the two largest numbers seen for that digit.\n        # We'll store a small list of at most 2 numbers (descending order).\n        top_two: dict[int, List[int]] = {}\n        \n        for num in nums:\n            # Compute the largest digit in num\n            max_digit = 0\n            n = num\n            while n > 0:\n                d = n % 10\n                if d > max_digit:\n                    max_digit = d\n                n //= 10\n            # For num = 0? Constraints say >=1, so fine.\n            \n            # Update top two for this max digit\n            if max_digit not in top_two:\n                top_two[max_digit] = [num]\n            else:\n                lst = top_two[max_digit]\n                if len(lst) < 2:\n                    lst.append(num)\n                    # Keep decreasing order for convenience\n                    if lst[0] < lst[1]:\n                        lst[0], lst[1] = lst[1], lst[0]\n                else:\n                    # Compare with the smaller of the two (lst[1])\n                    if num > lst[1]:\n                        if num > lst[0]:\n                            lst[1] = lst[0]\n                            lst[0] = num\n                        else:\n                            lst[1] = num\n                    # else: not large enough, ignore\n        \n        best = -1\n        for digit, lst in top_two.items():\n            if len(lst) >= 2:\n                best = max(best, lst[0] + lst[1])\n        \n        return best",
+    "estimated_date": "2023-08-13"
+  },
+  {
+    "problem_id": "2817",
+    "problem_slug": "minimum-absolute-difference-between-elements-with-constraint",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def minAbsoluteDifference(self, nums: List[int], x: int) -> int:\n        n = len(nums)\n        # When x = 0, we need the minimum absolute difference between any two distinct elements.\n        if x == 0:\n            # Sort and compute adjacent differences\n            sorted_nums = sorted(nums)\n            ans = float('inf')\n            for i in range(1, n):\n                ans = min(ans, sorted_nums[i] - sorted_nums[i-1])\n            return ans\n        \n        # Coordinate compression of all values\n        vals = sorted(set(nums))\n        m = len(vals)\n        val_to_idx = {val: i+1 for i, val in enumerate(vals)}  # 1-indexed\n        \n        # Fenwick Tree (Binary Indexed Tree) for counting occurrences\n        bit = [0] * (m + 1)\n        def bit_add(pos, delta):\n            while pos <= m:\n                bit[pos] += delta\n                pos += pos & -pos\n        def bit_sum(pos):\n            s = 0\n            while pos:\n                s += bit[pos]\n                pos -= pos & -pos\n            return s\n        def bit_kth(k):\n            # Find the smallest idx such that prefix sum >= k (1-indexed)\n            idx = 0\n            bitmask = 1 << (m.bit_length() - 1)  # highest power of two <= m\n            while bitmask:\n                nxt = idx + bitmask\n                if nxt <= m and bit[nxt] < k:\n                    k -= bit[nxt]\n                    idx = nxt\n                bitmask >>= 1\n            return idx + 1\n        \n        ans = float('inf')\n        # Iterate j from 0 to n-1\n        for j in range(n):\n            # Insert the element that becomes eligible: i = j - x\n            if j - x >= 0:\n                val = nums[j - x]\n                idx = val_to_idx[val]\n                bit_add(idx, 1)\n            \n            # Query for current element\n            cur = nums[j]\n            cur_idx = val_to_idx[cur]\n            # Predecessor: largest value <= cur\n            cnt_le = bit_sum(cur_idx)\n            if cnt_le > 0:\n                pred_idx = bit_kth(cnt_le)\n                pred_val = vals[pred_idx - 1]\n                ans = min(ans, abs(cur - pred_val))\n            # Successor: smallest value >= cur\n            cnt_lt = bit_sum(cur_idx - 1)   # number of elements strictly less than cur\n            total = bit_sum(m)\n            if total - cnt_lt > 0:\n                succ_idx = bit_kth(cnt_lt + 1)\n                succ_val = vals[succ_idx - 1]\n                ans = min(ans, abs(cur - succ_val))\n            \n            # Early exit if we already found 0\n            if ans == 0:\n                return 0\n        \n        return ans",
+    "estimated_date": "2023-08-13"
+  },
+  {
+    "problem_id": "2824",
+    "problem_slug": "count-pairs-whose-sum-is-less-than-target",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def countPairs(self, nums: List[int], target: int) -> int:\n        # Sort the array to use two-pointer technique\n        nums.sort()\n        n = len(nums)\n        left, right = 0, n - 1\n        count = 0\n        \n        while left < right:\n            # If the sum of the current pair is less than target,\n            # then all pairs (left, k) with left < k <= right also satisfy\n            if nums[left] + nums[right] < target:\n                count += (right - left)\n                left += 1\n            else:\n                # Sum is too large, move right pointer to decrease sum\n                right -= 1\n                \n        return count",
+    "estimated_date": "2023-08-13"
+  },
+  {
+    "problem_id": "2828",
+    "problem_slug": "check-if-a-string-is-an-acronym-of-words",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def isAcronym(self, words: List[str], s: str) -> bool:\n        # If lengths differ, it cannot be an acronym\n        if len(words) != len(s):\n            return False\n        \n        # Check each first character against corresponding character in s\n        for i, word in enumerate(words):\n            if word[0] != s[i]:\n                return False\n        \n        return True",
+    "estimated_date": "2023-08-20"
+  },
+  {
+    "problem_id": "2838",
+    "problem_slug": "maximum-coins-heroes-can-collect",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\nimport bisect\n\nclass Solution:\n    def maximumCoins(self, heroes: List[int], monsters: List[int], coins: List[int]) -> List[int]:\n        # Pair monsters with their coins and sort by monster power\n        monster_data = sorted(zip(monsters, coins))\n        monster_powers = [p for p, _ in monster_data]\n        # Compute prefix sums of coins\n        prefix = [0] * (len(monster_data) + 1)\n        for i, (_, c) in enumerate(monster_data, 1):\n            prefix[i] = prefix[i-1] + c\n        \n        ans = []\n        for h in heroes:\n            # Find the rightmost index where monster_power <= h\n            idx = bisect.bisect_right(monster_powers, h)\n            # Sum of coins for monsters with index < idx\n            ans.append(prefix[idx])\n        return ans",
+    "estimated_date": "2023-08-27"
+  },
+  {
+    "problem_id": "2841",
+    "problem_slug": "maximum-sum-of-almost-unique-subarray",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def maxSum(self, nums: List[int], m: int, k: int) -> int:\n        n = len(nums)\n        # If the array is shorter than k, no subarray exists\n        if n < k:\n            return 0\n\n        freq = {}          # frequency of elements in current window\n        distinct = 0       # number of distinct elements in current window\n        window_sum = 0     # sum of current window\n        max_sum = 0\n\n        for i in range(n):\n            # Add the rightmost element (nums[i]) to the window\n            x = nums[i]\n            freq[x] = freq.get(x, 0) + 1\n            if freq[x] == 1:\n                distinct += 1\n            window_sum += x\n\n            # Remove the leftmost element if the window size exceeds k\n            if i >= k:\n                left = nums[i - k]\n                window_sum -= left\n                freq[left] -= 1\n                if freq[left] == 0:\n                    distinct -= 1\n                    # Optional: delete the key to keep dictionary clean\n                    del freq[left]\n\n            # Once we have a full window of size k, check distinct count\n            if i >= k - 1:\n                if distinct >= m:\n                    max_sum = max(max_sum, window_sum)\n\n        return max_sum",
+    "estimated_date": "2023-08-27"
+  },
+  {
+    "problem_id": "2843",
+    "problem_slug": "count-symmetric-integers",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def countSymmetricIntegers(self, low: int, high: int) -> int:\n        count = 0\n        for num in range(low, high + 1):\n            s = str(num)\n            if len(s) % 2 != 0:\n                continue\n            n = len(s) // 2\n            left_sum = sum(int(c) for c in s[:n])\n            right_sum = sum(int(c) for c in s[n:])\n            if left_sum == right_sum:\n                count += 1\n        return count",
+    "estimated_date": "2023-09-03"
+  },
+  {
+    "problem_id": "2848",
+    "problem_slug": "points-that-intersect-with-cars",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def numberOfPoints(self, nums: List[List[int]]) -> int:\n        # Since max coordinate is 100, create an array of size 101 (index 0..100)\n        covered = [False] * 101\n        \n        for start, end in nums:\n            # Mark all integer points from start to end inclusive\n            for point in range(start, end + 1):\n                covered[point] = True\n        \n        # Count the number of covered points (points 1..100)\n        return sum(covered[1:])",
+    "estimated_date": "2023-09-10"
+  },
+  {
+    "problem_id": "2859",
+    "problem_slug": "sum-of-values-at-indices-with-k-set-bits",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def sumIndicesWithKSetBits(self, nums: List[int], k: int) -> int:\n        total = 0\n        for i in range(len(nums)):\n            # Count the number of set bits (1's) in the binary representation of index i\n            if bin(i).count('1') == k:\n                total += nums[i]\n        return total",
+    "estimated_date": "2023-09-17"
+  },
+  {
+    "problem_id": "2873",
+    "problem_slug": "maximum-value-of-an-ordered-triplet-i",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def maximumTripletValue(self, nums: List[int]) -> int:\n        n = len(nums)\n        max_val = 0  # since we can always return 0 if all negative\n        for i in range(n - 2):\n            for j in range(i + 1, n - 1):\n                for k in range(j + 1, n):\n                    val = (nums[i] - nums[j]) * nums[k]\n                    if val > max_val:\n                        max_val = val\n        return max_val",
+    "estimated_date": "2023-10-01"
+  },
+  {
+    "problem_id": "2874",
+    "problem_slug": "maximum-value-of-an-ordered-triplet-ii",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def maximumTripletValue(self, nums: List[int]) -> int:\n        n = len(nums)\n        # suffix_max[i] = max(nums[i..n-1])\n        suffix_max = [0] * (n + 1)  # extra slot for convenience\n        for i in range(n - 1, -1, -1):\n            suffix_max[i] = max(nums[i], suffix_max[i + 1])\n        \n        max_val = 0\n        max_prefix = nums[0]  # maximum value among indices < j\n        \n        for j in range(1, n - 1):\n            # max_prefix is the maximum of nums[0..j-1]\n            diff = max_prefix - nums[j]\n            # multiply by the maximum nums[k] for k > j\n            product = diff * suffix_max[j + 1]\n            max_val = max(max_val, product)\n            # update max_prefix for next iteration\n            max_prefix = max(max_prefix, nums[j])\n        \n        return max_val",
+    "estimated_date": "2023-10-01"
+  },
+  {
+    "problem_id": "2876",
+    "problem_slug": "count-visited-nodes-in-a-directed-graph",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def countVisitedNodes(self, edges: List[int]) -> List[int]:\n        n = len(edges)\n        state = [0] * n          # 0 = unvisited, 1 = visiting, 2 = processed\n        result = [0] * n\n\n        for start in range(n):\n            if state[start] != 0:\n                continue\n\n            # walk from start until we meet a visited node\n            path = []\n            cur = start\n            while state[cur] == 0:\n                state[cur] = 1\n                path.append(cur)\n                cur = edges[cur]\n\n            # now cur is either in the current path (cycle) or already processed\n            if state[cur] == 2:      # we hit a node whose answer is already known\n                for u in reversed(path):\n                    result[u] = 1 + result[edges[u]]\n            else:                    # we hit a node in the current path -> cycle\n                # find the first occurrence of cur in path\n                idx = path.index(cur)\n                cycle_len = len(path) - idx\n                # assign answers from the end of the path backwards\n                for pos in range(len(path) - 1, -1, -1):\n                    u = path[pos]\n                    if pos >= idx:\n                        result[u] = cycle_len\n                    else:\n                        result[u] = 1 + result[edges[u]]\n\n            # mark all nodes in this path as processed\n            for u in path:\n                state[u] = 2\n\n        return result",
+    "estimated_date": "2023-10-01"
+  },
+  {
+    "problem_id": "2894",
+    "problem_slug": "divisible-and-non-divisible-sums-difference",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def differenceOfSums(self, n: int, m: int) -> int:\n        \"\"\"\n        Returns the difference between the sum of numbers in [1, n] not divisible by m\n        and the sum of numbers divisible by m.\n        \"\"\"\n        total = n * (n + 1) // 2   # sum of 1..n\n        k = n // m                 # count of multiples of m up to n\n        sum_divisible = m * k * (k + 1) // 2   # sum of multiples\n        # result = (total - sum_divisible) - sum_divisible = total - 2*sum_divisible\n        return total - 2 * sum_divisible",
+    "estimated_date": "2023-10-08"
+  },
+  {
+    "problem_id": "2906",
+    "problem_slug": "construct-product-matrix",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def constructProductMatrix(self, grid: List[List[int]]) -> List[List[int]]:\n        MOD = 12345\n        n = len(grid)\n        m = len(grid[0])\n        N = n * m\n        \n        # flatten the grid into a 1D array\n        arr = [0] * N\n        idx = 0\n        for i in range(n):\n            for j in range(m):\n                arr[idx] = grid[i][j]\n                idx += 1\n        \n        # prefix products\n        left = [1] * (N + 1)\n        for i in range(1, N + 1):\n            left[i] = (left[i - 1] * arr[i - 1]) % MOD\n        \n        # suffix products\n        right = [1] * (N + 1)\n        for i in range(N - 1, -1, -1):\n            right[i] = (right[i + 1] * arr[i]) % MOD\n        \n        # result for each element: product of all except itself\n        result = [0] * N\n        for i in range(N):\n            result[i] = (left[i] * right[i + 1]) % MOD\n        \n        # reshape back to 2D grid\n        ans = [[0] * m for _ in range(n)]\n        idx = 0\n        for i in range(n):\n            for j in range(m):\n                ans[i][j] = result[idx]\n                idx += 1\n        \n        return ans",
+    "estimated_date": "2023-10-15"
+  },
+  {
+    "problem_id": "2907",
+    "problem_slug": "maximum-profitable-triplets-with-increasing-prices-i",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def maxProfit(self, prices: List[int], profits: List[int]) -> int:\n        n = len(prices)\n        # Initialize arrays to store maximum profit on left and right\n        left_max = [0] * n\n        right_max = [0] * n\n        \n        # Compute left_max for each j: maximum profit among i < j with prices[i] < prices[j]\n        for j in range(n):\n            max_profit = -1  # sentinel value indicating no valid item\n            for i in range(j):\n                if prices[i] < prices[j]:\n                    max_profit = max(max_profit, profits[i])\n            left_max[j] = max_profit\n        \n        # Compute right_max for each j: maximum profit among k > j with prices[k] > prices[j]\n        for j in range(n):\n            max_profit = -1\n            for k in range(j+1, n):\n                if prices[k] > prices[j]:\n                    max_profit = max(max_profit, profits[k])\n            right_max[j] = max_profit\n        \n        # Now evaluate each j as the middle element\n        answer = -1\n        for j in range(n):\n            if left_max[j] != -1 and right_max[j] != -1:\n                total = left_max[j] + profits[j] + right_max[j]\n                if total > answer:\n                    answer = total\n        \n        return answer",
+    "estimated_date": "2023-10-15"
+  },
+  {
+    "problem_id": "2908",
+    "problem_slug": "minimum-sum-of-mountain-triplets-i",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def minimumSum(self, nums: List[int]) -> int:\n        \"\"\"\n        Returns the minimum possible sum of a mountain triplet (i < j < k)\n        with nums[i] < nums[j] and nums[k] < nums[j].\n        If no such triplet exists, returns -1.\n        \"\"\"\n        n = len(nums)\n        min_sum = float('inf')\n        for i in range(n):\n            for j in range(i + 1, n):\n                for k in range(j + 1, n):\n                    if nums[i] < nums[j] and nums[k] < nums[j]:\n                        total = nums[i] + nums[j] + nums[k]\n                        if total < min_sum:\n                            min_sum = total\n        return min_sum if min_sum != float('inf') else -1",
+    "estimated_date": "2023-10-22"
+  },
+  {
+    "problem_id": "2909",
+    "problem_slug": "minimum-sum-of-mountain-triplets-ii",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def minimumSum(self, nums: List[int]) -> int:\n        n = len(nums)\n        if n < 3:\n            return -1\n\n        # prefix minimum: min(nums[0..i])\n        prefix_min = [0] * n\n        prefix_min[0] = nums[0]\n        for i in range(1, n):\n            prefix_min[i] = min(prefix_min[i-1], nums[i])\n\n        # suffix minimum: min(nums[i..n-1])\n        suffix_min = [0] * n\n        suffix_min[n-1] = nums[n-1]\n        for i in range(n-2, -1, -1):\n            suffix_min[i] = min(suffix_min[i+1], nums[i])\n\n        ans = float('inf')\n        # j must be between 1 and n-2 (inclusive) so that i and k exist\n        for j in range(1, n-1):\n            left_min = prefix_min[j-1]\n            right_min = suffix_min[j+1]\n            if left_min < nums[j] and right_min < nums[j]:\n                ans = min(ans, left_min + nums[j] + right_min)\n\n        return -1 if ans == float('inf') else ans",
+    "estimated_date": "2023-10-22"
+  },
+  {
+    "problem_id": "2913",
+    "problem_slug": "subarrays-distinct-element-sum-of-squares-i",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def sumCounts(self, nums: List[int]) -> int:\n        n = len(nums)\n        total = 0\n        for i in range(n):\n            seen = set()\n            for j in range(i, n):\n                seen.add(nums[j])\n                distinct = len(seen)\n                total += distinct * distinct\n        return total",
+    "estimated_date": "2023-10-22"
+  },
+  {
+    "problem_id": "2916",
+    "problem_slug": "subarrays-distinct-element-sum-of-squares-ii",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Fenwick:\n    \"\"\"Fenwick tree for point updates and prefix sums.\"\"\"\n    def __init__(self, size: int):\n        self.n = size\n        self.bit = [0] * (size + 1)  # 1-indexed\n\n    def add(self, idx: int, delta: int) -> None:\n        \"\"\"Add delta at position idx (1-based).\"\"\"\n        while idx <= self.n:\n            self.bit[idx] += delta\n            idx += idx & -idx\n\n    def sum(self, idx: int) -> int:\n        \"\"\"Return prefix sum from 1 to idx.\"\"\"\n        s = 0\n        while idx > 0:\n            s += self.bit[idx]\n            idx -= idx & -idx\n        return s\n\n\nclass Solution:\n    def sumCounts(self, nums: List[int]) -> int:\n        MOD = 10**9 + 7\n        n = len(nums)\n        # R[i] = next occurrence of same value, or n if none\n        next_occ = {}\n        R = [0] * n\n        for i in range(n - 1, -1, -1):\n            val = nums[i]\n            R[i] = next_occ.get(val, n)\n            next_occ[val] = i\n\n        # Diagonal contribution: sum over i of (i+1)*(R[i]-i)\n        diag = 0\n        for i in range(n):\n            diag += (i + 1) * (R[i] - i)\n\n        # For each index i that will be added (R[i] > i+1), schedule its removal at R[i]\n        removal = [[] for _ in range(n + 1)]   # indices 1..n\n        for i in range(n):\n            if R[i] > i + 1:      # will be added when j = i+1\n                removal[R[i]].append(i)\n\n        # Fenwick trees: one for sum of (i+1), one for sum of (i+1)*R[i]\n        BIT1 = Fenwick(n + 1)\n        BIT2 = Fenwick(n + 1)\n\n        total_off = 0\n\n        for j in range(n):\n            # remove indices whose R[i] == j (these were added earlier and now become inactive)\n            for i in removal[j]:\n                BIT1.add(R[i], -(i + 1))\n                BIT2.add(R[i], -(i + 1) * R[i])\n\n            # add the new index i = j-1 if it satisfies R[i] > j\n            if j > 0:\n                i = j - 1\n                if R[i] > j:\n                    BIT1.add(R[i], i + 1)\n                    BIT2.add(R[i], (i + 1) * R[i])\n\n            # query for current j\n            total1 = BIT1.sum(n)\n            total2 = BIT2.sum(n)\n            limit = R[j]\n            sum1_le = BIT1.sum(limit)\n            sum2_le = BIT2.sum(limit)\n            sum1_gt = total1 - sum1_le\n\n            contrib = (sum2_le - j * sum1_le) + (R[j] - j) * sum1_gt\n            total_off += contrib\n\n        ans = diag + 2 * total_off\n        return ans % MOD",
+    "estimated_date": "2023-10-22"
+  },
+  {
+    "problem_id": "2917",
+    "problem_slug": "find-the-k-or-of-an-array",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def findKOr(self, nums: List[int], k: int) -> int:\n        result = 0\n        # Consider bits from 0 to 31 (since nums[i] < 2^31, but bit 31 is safe to check)\n        for bit in range(32):\n            count = 0\n            mask = 1 << bit\n            for num in nums:\n                if num & mask:\n                    count += 1\n            if count >= k:\n                result |= mask\n        return result",
+    "estimated_date": "2023-10-29"
+  },
+  {
+    "problem_id": "2921",
+    "problem_slug": "maximum-profitable-triplets-with-increasing-prices-ii",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def maxProfit(self, prices: List[int], profits: List[int]) -> int:\n        n = len(prices)\n        max_price = max(prices)\n\n        # Fenwick tree for range maximum query (1-indexed)\n        class BIT:\n            def __init__(self, size: int):\n                self.n = size\n                self.tree = [0] * (size + 1)\n\n            def update(self, idx: int, val: int) -> None:\n                while idx <= self.n:\n                    if val > self.tree[idx]:\n                        self.tree[idx] = val\n                    idx += idx & -idx\n\n            def query(self, idx: int) -> int:\n                res = 0\n                while idx > 0:\n                    if self.tree[idx] > res:\n                        res = self.tree[idx]\n                    idx -= idx & -idx\n                return res\n\n        # ----- Left side: best profit before i with smaller price -----\n        left_best = [0] * n\n        left_bit = BIT(max_price)\n        for i in range(n):\n            p = prices[i]\n            if p > 1:                       # there exists a smaller price\n                left_best[i] = left_bit.query(p - 1)\n            left_bit.update(p, profits[i])\n\n        # ----- Right side: best profit after i with larger price -----\n        right_best = [0] * n\n        right_bit = BIT(max_price)\n        for i in range(n - 1, -1, -1):\n            p = prices[i]\n            rev = max_price - p + 1        # map larger prices to smaller rev indices\n            if rev > 1:                    # there exists a larger original price\n                right_best[i] = right_bit.query(rev - 1)\n            right_bit.update(rev, profits[i])\n\n        # ----- Combine -----\n        ans = -1\n        for j in range(n):\n            if left_best[j] > 0 and right_best[j] > 0:\n                total = left_best[j] + profits[j] + right_best[j]\n                if total > ans:\n                    ans = total\n\n        return ans",
+    "estimated_date": "2023-10-29"
+  },
+  {
+    "problem_id": "2928",
+    "problem_slug": "distribute-candies-among-children-i",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from math import comb\n\nclass Solution:\n    def distributeCandies(self, n: int, limit: int) -> int:\n        # total number of non-negative integer solutions to x1+x2+x3 = n\n        total = comb(n + 2, 2)\n        \n        # number of candies that would make a child exceed the limit\n        exceed = limit + 1\n        \n        # number of solutions where exactly one specific child exceeds the limit\n        one = comb(n - exceed + 2, 2) if n >= exceed else 0\n        \n        # number of solutions where exactly two specific children exceed the limit\n        two = comb(n - 2 * exceed + 2, 2) if n >= 2 * exceed else 0\n        \n        # number of solutions where all three children exceed the limit\n        three = comb(n - 3 * exceed + 2, 2) if n >= 3 * exceed else 0\n        \n        # inclusion–exclusion principle\n        return total - 3 * one + 3 * two - three",
+    "estimated_date": "2023-11-05"
+  },
+  {
+    "problem_id": "2942",
+    "problem_slug": "find-words-containing-character",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def findWordsContaining(self, words: List[str], x: str) -> List[int]:\n        result = []\n        for i, word in enumerate(words):\n            if x in word:\n                result.append(i)\n        return result",
+    "estimated_date": "2023-11-19"
+  },
+  {
+    "problem_id": "2947",
+    "problem_slug": "count-beautiful-substrings-i",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def beautifulSubstrings(self, s: str, k: int) -> int:\n        vowels = set('aeiou')\n        n = len(s)\n        ans = 0\n        \n        # iterate over all starting positions\n        for i in range(n):\n            v = 0\n            c = 0\n            # expand substring from i\n            for j in range(i, n):\n                if s[j] in vowels:\n                    v += 1\n                else:\n                    c += 1\n                if v == c and (v * c) % k == 0:\n                    ans += 1\n        return ans",
+    "estimated_date": "2023-11-26"
+  },
+  {
+    "problem_id": "2949",
+    "problem_slug": "count-beautiful-substrings-ii",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def beautifulSubstrings(self, s: str, k: int) -> int:\n        # compute minimal m such that m^2 % k == 0\n        m = 1\n        while m * m % k != 0:\n            m += 1\n        mod = 2 * m\n\n        vowels = set('aeiou')\n        # count_map: key = (prefix_sum, remainder) -> count of indices\n        count_map = {}\n        # initial prefix at index 0\n        prefix = 0\n        remainder = 0  # index 0 % mod = 0\n        count_map[(prefix, remainder)] = 1\n\n        ans = 0\n        # iterate over each character, i is the index after processing the character (1-indexed)\n        for i, ch in enumerate(s, start=1):\n            # update prefix sum\n            prefix += 1 if ch in vowels else -1\n            remainder = i % mod\n            key = (prefix, remainder)\n            # add number of previous indices with same (prefix, remainder)\n            ans += count_map.get(key, 0)\n            # increment count for this key\n            count_map[key] = count_map.get(key, 0) + 1\n\n        return ans",
+    "estimated_date": "2023-11-26"
+  },
+  {
+    "problem_id": "2951",
+    "problem_slug": "find-the-peaks",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def findPeaks(self, mountain: List[int]) -> List[int]:\n        \"\"\"\n        Returns the indices of all peaks in the mountain array.\n        A peak is defined as an element strictly greater than its neighbors.\n        The first and last elements are not considered peaks.\n        \"\"\"\n        peaks = []\n        # Iterate from index 1 to len(mountain)-2 (inclusive)\n        for i in range(1, len(mountain) - 1):\n            if mountain[i] > mountain[i-1] and mountain[i] > mountain[i+1]:\n                peaks.append(i)\n        return peaks",
+    "estimated_date": "2023-12-03"
+  },
+  {
+    "problem_id": "2953",
+    "problem_slug": "count-complete-substrings",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def countCompleteSubstrings(self, word: str, k: int) -> int:\n        # Split the string into maximal segments where every adjacent pair\n        # has alphabet difference <= 2.\n        segments = []\n        n = len(word)\n        i = 0\n        while i < n:\n            j = i + 1\n            while j < n and abs(ord(word[j]) - ord(word[j-1])) <= 2:\n                j += 1\n            segments.append(word[i:j])\n            i = j\n\n        total = 0\n        for seg in segments:\n            total += self._count_in_segment(seg, k)\n        return total\n\n    def _count_in_segment(self, s: str, k: int) -> int:\n        n = len(s)\n        # Only 26 possible letters, so m (number of distinct characters) is at most 26\n        max_m = min(26, n // k)\n        res = 0\n\n        for m in range(1, max_m + 1):\n            L = k * m               # length of the substring\n            freq = [0] * 26\n            bad = 0                 # number of characters with freq not 0 and not k\n\n            # Helper to add a character\n            def add_char(ch):\n                nonlocal bad\n                idx = ord(ch) - 97\n                old = freq[idx]\n                freq[idx] = old + 1\n                new = freq[idx]\n                if old == 0:\n                    if new != k:\n                        bad += 1\n                elif old == k:\n                    bad += 1\n                else:\n                    if new == k:\n                        bad -= 1\n\n            # Helper to remove a character\n            def remove_char(ch):\n                nonlocal bad\n                idx = ord(ch) - 97\n                old = freq[idx]\n                freq[idx] = old - 1\n                new = freq[idx]\n                if old == k:\n                    if new != 0:\n                        bad += 1\n                elif old == 0:\n                    pass\n                else:\n                    if new == 0 or new == k:\n                        bad -= 1\n\n            # Initialize first window\n            for i in range(L):\n                add_char(s[i])\n            if bad == 0:\n                res += 1\n\n            # Slide the window\n            for i in range(L, n):\n                remove_char(s[i - L])\n                add_char(s[i])\n                if bad == 0:\n                    res += 1\n\n        return res",
+    "estimated_date": "2023-12-03"
+  },
+  {
+    "problem_id": "2956",
+    "problem_slug": "find-common-elements-between-two-arrays",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def findIntersectionValues(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        # Convert both arrays to sets for O(1) membership tests\n        set1 = set(nums1)\n        set2 = set(nums2)\n        \n        # Count indices in nums1 whose value exists in nums2\n        answer1 = sum(1 for x in nums1 if x in set2)\n        # Count indices in nums2 whose value exists in nums1\n        answer2 = sum(1 for x in nums2 if x in set1)\n        \n        return [answer1, answer2]",
+    "estimated_date": "2023-12-03"
+  },
+  {
+    "problem_id": "2958",
+    "problem_slug": "length-of-longest-subarray-with-at-most-k-frequency",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def maxSubarrayLength(self, nums: List[int], k: int) -> int:\n        freq = {}\n        left = 0\n        max_len = 0\n        \n        for right, val in enumerate(nums):\n            # increment frequency of current element\n            freq[val] = freq.get(val, 0) + 1\n            \n            # if frequency exceeds k, shrink window from left\n            while freq[val] > k:\n                left_val = nums[left]\n                freq[left_val] -= 1\n                if freq[left_val] == 0:\n                    del freq[left_val]\n                left += 1\n            \n            # update maximum length\n            max_len = max(max_len, right - left + 1)\n        \n        return max_len",
+    "estimated_date": "2023-12-03"
+  },
+  {
+    "problem_id": "2960",
+    "problem_slug": "count-tested-devices-after-test-operations",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def countTestedDevices(self, batteryPercentages: List[int]) -> int:\n        count = 0\n        n = len(batteryPercentages)\n        for i in range(n):\n            if batteryPercentages[i] > 0:\n                count += 1\n                # Decrease all subsequent devices by 1, but not below 0\n                for j in range(i + 1, n):\n                    batteryPercentages[j] = max(0, batteryPercentages[j] - 1)\n        return count",
+    "estimated_date": "2023-12-10"
+  },
+  {
+    "problem_id": "2964",
+    "problem_slug": "number-of-divisible-triplet-sums",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def divisibleTripletCount(self, nums: List[int], d: int) -> int:\n        n = len(nums)\n        if n < 3:\n            return 0\n        \n        # Compute remainders modulo d\n        rem = [x % d for x in nums]\n        \n        # Frequency map for elements to the right of the current middle index j\n        # Initially, for j = 1, the right side is indices 2..n-1\n        freq = {}\n        for k in range(2, n):\n            r = rem[k]\n            freq[r] = freq.get(r, 0) + 1\n        \n        ans = 0\n        # j ranges from 1 to n-2 (inclusive) because we need at least one left and one right\n        for j in range(1, n-1):\n            # For each i < j, count the needed remainder in the right side\n            for i in range(j):\n                needed = (- (rem[i] + rem[j])) % d\n                ans += freq.get(needed, 0)\n            \n            # Prepare for next j: remove the element at index j+1 from the right side\n            # (since for the next j, this element will become the new middle or left)\n            if j + 1 < n:\n                r = rem[j+1]\n                freq[r] -= 1\n                if freq[r] == 0:\n                    del freq[r]\n        \n        return ans",
+    "estimated_date": "2023-12-10"
+  },
+  {
+    "problem_id": "2966",
+    "problem_slug": "divide-array-into-arrays-with-max-difference",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def divideArray(self, nums: List[int], k: int) -> List[List[int]]:\n        n = len(nums)\n        # Sort the array to make it easy to form groups with minimal differences\n        nums.sort()\n        result = []\n        \n        # Check every consecutive group of 3 elements\n        for i in range(0, n, 3):\n            # If the max difference in the group exceeds k, it's impossible\n            if nums[i+2] - nums[i] > k:\n                return []\n            result.append([nums[i], nums[i+1], nums[i+2]])\n        \n        return result",
+    "estimated_date": "2023-12-17"
+  },
+  {
+    "problem_id": "3000",
+    "problem_slug": "maximum-area-of-longest-diagonal-rectangle",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def areaOfMaxDiagonal(self, dimensions: List[List[int]]) -> int:\n        best_diag_sq = 0\n        best_area = 0\n        for length, width in dimensions:\n            diag_sq = length * length + width * width\n            area = length * width\n            if diag_sq > best_diag_sq or (diag_sq == best_diag_sq and area > best_area):\n                best_diag_sq = diag_sq\n                best_area = area\n        return best_area",
+    "estimated_date": "2024-01-07"
+  },
+  {
+    "problem_id": "3006",
+    "problem_slug": "find-beautiful-indices-in-the-given-array-i",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\nimport bisect\n\nclass Solution:\n    def beautifulIndices(self, s: str, a: str, b: str, k: int) -> List[int]:\n        n = len(s)\n        la, lb = len(a), len(b)\n        \n        # Find all indices where a occurs\n        posA = [i for i in range(n - la + 1) if s[i:i+la] == a]\n        # Find all indices where b occurs\n        posB = [j for j in range(n - lb + 1) if s[j:j+lb] == b]\n        \n        beautiful = []\n        # For each i in posA, check if there exists j in posB with |j-i| <= k\n        # Use binary search to find any j in [i-k, i+k]\n        for i in posA:\n            left = i - k\n            right = i + k\n            # Find the first j >= left\n            idx = bisect.bisect_left(posB, left)\n            # If that j exists and is <= right, then i is beautiful\n            if idx < len(posB) and posB[idx] <= right:\n                beautiful.append(i)\n        \n        return beautiful",
+    "estimated_date": "2024-01-14"
+  },
+  {
+    "problem_id": "3008",
+    "problem_slug": "find-beautiful-indices-in-the-given-array-ii",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def beautifulIndices(self, s: str, a: str, b: str, k: int) -> List[int]:\n        # Helper: KMP pattern search, returns list of starting indices (sorted)\n        def kmp_find(text: str, pattern: str) -> List[int]:\n            n, m = len(text), len(pattern)\n            if m == 0 or n < m:\n                return []\n            # compute LPS (longest proper prefix which is also suffix)\n            lps = [0] * m\n            length = 0\n            i = 1\n            while i < m:\n                if pattern[i] == pattern[length]:\n                    length += 1\n                    lps[i] = length\n                    i += 1\n                else:\n                    if length != 0:\n                        length = lps[length - 1]\n                    else:\n                        lps[i] = 0\n                        i += 1\n            # search\n            res = []\n            i = 0  # index in text\n            j = 0  # index in pattern\n            while i < n:\n                if s[i] == pattern[j]:\n                    i += 1\n                    j += 1\n                    if j == m:\n                        res.append(i - m)\n                        j = lps[j - 1]  # allow overlapping matches\n                else:\n                    if j != 0:\n                        j = lps[j - 1]\n                    else:\n                        i += 1\n            return res\n\n        # Find all occurrences of a and b\n        pos_a = kmp_find(s, a)\n        pos_b = kmp_find(s, b)\n\n        # If no occurrences of a, result is empty\n        if not pos_a or not pos_b:\n            return []\n\n        # Two-pointer technique to check condition |j - i| <= k\n        result = []\n        j = 0\n        for i in pos_a:\n            # Advance j to the first b index >= i - k\n            while j < len(pos_b) and pos_b[j] < i - k:\n                j += 1\n            # If such b index exists and is within i + k, it's beautiful\n            if j < len(pos_b) and pos_b[j] <= i + k:\n                result.append(i)\n\n        return result",
+    "estimated_date": "2024-01-14"
+  },
+  {
+    "problem_id": "3019",
+    "problem_slug": "number-of-changing-keys",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def countKeyChanges(self, s: str) -> int:\n        \"\"\"\n        Counts the number of times the user changes the key when typing a string.\n        Key changes are case-insensitive: 'a' and 'A' are considered the same key.\n        \"\"\"\n        count = 0\n        # Compare each character with the previous one, ignoring case\n        for i in range(1, len(s)):\n            if s[i].lower() != s[i-1].lower():\n                count += 1\n        return count",
+    "estimated_date": "2024-01-28"
+  },
+  {
+    "problem_id": "3024",
+    "problem_slug": "type-of-triangle",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def triangleType(self, nums: List[int]) -> str:\n        # Sort the sides to easily check triangle inequality\n        a, b, c = sorted(nums)\n        \n        # Triangle inequality: sum of the two smaller sides must be greater than the largest side\n        if a + b <= c:\n            return \"none\"\n        \n        # Determine the type based on side lengths\n        if a == b == c:\n            return \"equilateral\"\n        if a == b or b == c or a == c:\n            return \"isosceles\"\n        return \"scalene\"",
+    "estimated_date": "2024-01-28"
+  },
+  {
+    "problem_id": "3028",
+    "problem_slug": "ant-on-the-boundary",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def returnToBoundaryCount(self, nums: List[int]) -> int:\n        position = 0\n        count = 0\n        for num in nums:\n            position += num  # move: positive for right, negative for left\n            if position == 0:\n                count += 1\n        return count",
+    "estimated_date": "2024-02-04"
+  },
+  {
+    "problem_id": "3032",
+    "problem_slug": "count-numbers-with-unique-digits-ii",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def numberCount(self, a: int, b: int) -> int:\n        count = 0\n        for num in range(a, b + 1):\n            s = str(num)\n            if len(set(s)) == len(s):\n                count += 1\n        return count",
+    "estimated_date": "2024-02-04"
+  },
+  {
+    "problem_id": "3034",
+    "problem_slug": "number-of-subarrays-that-match-a-pattern-i",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def countMatchingSubarrays(self, nums: List[int], pattern: List[int]) -> int:\n        n = len(nums)\n        m = len(pattern)\n        count = 0\n        # subarray of length m+1, last start index = n - (m+1) = n - m - 1\n        for i in range(n - m):\n            match = True\n            for k in range(m):\n                diff = nums[i + k + 1] - nums[i + k]\n                if pattern[k] == 1 and diff <= 0:\n                    match = False\n                    break\n                elif pattern[k] == 0 and diff != 0:\n                    match = False\n                    break\n                elif pattern[k] == -1 and diff >= 0:\n                    match = False\n                    break\n            if match:\n                count += 1\n        return count",
+    "estimated_date": "2024-02-11"
+  },
+  {
+    "problem_id": "3036",
+    "problem_slug": "number-of-subarrays-that-match-a-pattern-ii",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def countMatchingSubarrays(self, nums: List[int], pattern: List[int]) -> int:\n        n = len(nums)\n        m = len(pattern)\n        # Build the diff array of length n-1\n        diff = [0] * (n - 1)\n        for i in range(n - 1):\n            if nums[i+1] > nums[i]:\n                diff[i] = 1\n            elif nums[i+1] == nums[i]:\n                diff[i] = 0\n            else:\n                diff[i] = -1\n\n        # KMP preprocessing: compute LPS array for pattern\n        lps = [0] * m\n        j = 0\n        for i in range(1, m):\n            while j > 0 and pattern[i] != pattern[j]:\n                j = lps[j-1]\n            if pattern[i] == pattern[j]:\n                j += 1\n                lps[i] = j\n\n        # KMP search in diff\n        count = 0\n        j = 0\n        for i in range(len(diff)):\n            while j > 0 and diff[i] != pattern[j]:\n                j = lps[j-1]\n            if diff[i] == pattern[j]:\n                j += 1\n            if j == m:\n                # Found a match ending at diff[i]; starting index = i - m + 1\n                count += 1\n                j = lps[j-1]   # continue looking for overlapping matches\n\n        return count",
+    "estimated_date": "2024-02-11"
+  },
+  {
+    "problem_id": "3042",
+    "problem_slug": "count-prefix-and-suffix-pairs-i",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def countPrefixSuffixPairs(self, words: List[str]) -> int:\n        count = 0\n        n = len(words)\n        for i in range(n):\n            for j in range(i + 1, n):\n                str1 = words[i]\n                str2 = words[j]\n                # str1 must be both prefix and suffix of str2\n                # Check length condition first for efficiency\n                if len(str1) <= len(str2) and str2.startswith(str1) and str2.endswith(str1):\n                    count += 1\n        return count",
+    "estimated_date": "2024-02-18"
+  },
+  {
+    "problem_id": "3043",
+    "problem_slug": "find-the-length-of-the-longest-common-prefix",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def longestCommonPrefix(self, arr1: List[int], arr2: List[int]) -> int:\n        # Step 1: Build a set containing all prefixes of all numbers in arr1\n        prefixes = set()\n        for num in arr1:\n            s = str(num)\n            # Insert all prefixes of this number\n            for i in range(1, len(s) + 1):\n                prefixes.add(s[:i])\n        \n        # Step 2: For each number in arr2, check its prefixes from longest to shortest\n        max_len = 0\n        for num in arr2:\n            s = str(num)\n            # Check prefixes from longest to shortest\n            for i in range(len(s), 0, -1):\n                if s[:i] in prefixes:\n                    max_len = max(max_len, i)\n                    break  # no need to check shorter prefixes for this number\n        \n        return max_len",
+    "estimated_date": "2024-02-18"
+  },
+  {
+    "problem_id": "3045",
+    "problem_slug": "count-prefix-and-suffix-pairs-ii",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def countPrefixSuffixPairs(self, words: List[str]) -> int:\n        # Precompute powers of base up to the maximum word length\n        max_len = max(len(w) for w in words) if words else 0\n        if max_len == 0:\n            return 0\n\n        base = 131\n        mod1 = 10**9 + 7\n        mod2 = 10**9 + 9\n\n        pow1 = [1] * (max_len + 1)\n        pow2 = [1] * (max_len + 1)\n        for i in range(1, max_len + 1):\n            pow1[i] = (pow1[i-1] * base) % mod1\n            pow2[i] = (pow2[i-1] * base) % mod2\n\n        def compute_prefix_hashes(s: str):\n            \"\"\"Return two prefix hash lists (mod1, mod2) for the string s.\"\"\"\n            n = len(s)\n            h1 = [0] * (n + 1)\n            h2 = [0] * (n + 1)\n            for i, ch in enumerate(s):\n                val = ord(ch) - ord('a') + 1  # 1..26\n                h1[i+1] = (h1[i] * base + val) % mod1\n                h2[i+1] = (h2[i] * base + val) % mod2\n            return h1, h2\n\n        def compute_pi(s: str):\n            \"\"\"Return the prefix function (KMP) for the string s.\"\"\"\n            n = len(s)\n            pi = [0] * n\n            for i in range(1, n):\n                j = pi[i-1]\n                while j > 0 and s[i] != s[j]:\n                    j = pi[j-1]\n                if s[i] == s[j]:\n                    j += 1\n                pi[i] = j\n            return pi\n\n        # Dictionary storing (length, hash1, hash2) -> count of words seen so far\n        seen = {}\n        ans = 0\n\n        for w in words:\n            m = len(w)\n            h1, h2 = compute_prefix_hashes(w)\n\n            # Get all border lengths (including the whole word)\n            pi = compute_pi(w)\n            borders = []\n            if m > 0:\n                L = m\n                borders.append(L)\n                L = pi[-1]\n                while L > 0:\n                    borders.append(L)\n                    L = pi[L - 1]\n\n            # For each border, add the number of previous words equal to that prefix\n            for L in borders:\n                key = (L, h1[L], h2[L])   # hash of w[0:L]\n                ans += seen.get(key, 0)\n\n            # Insert the whole word into the map\n            full_key = (m, h1[m], h2[m])\n            seen[full_key] = seen.get(full_key, 0) + 1\n\n        return ans",
+    "estimated_date": "2024-02-18"
+  },
+  {
+    "problem_id": "3079",
+    "problem_slug": "find-the-sum-of-encrypted-integers",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def sumOfEncryptedInt(self, nums: List[int]) -> int:\n        total = 0\n        for num in nums:\n            s = str(num)\n            max_digit = max(s)  # maximum digit character\n            encrypted = int(max_digit * len(s))\n            total += encrypted\n        return total",
+    "estimated_date": "2024-03-10"
+  },
+  {
+    "problem_id": "3083",
+    "problem_slug": "existence-of-a-substring-in-a-string-and-its-reverse",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def isSubstringPresent(self, s: str) -> bool:\n        # If the string length is less than 2, no substring of length 2 exists\n        if len(s) < 2:\n            return False\n\n        # Collect all substrings of length 2 from s into a set\n        substrings = set()\n        for i in range(len(s) - 1):\n            substrings.add(s[i:i+2])\n\n        # Reverse the string\n        rev = s[::-1]\n\n        # Check each substring of length 2 in reversed string\n        for i in range(len(rev) - 1):\n            if rev[i:i+2] in substrings:\n                return True\n\n        return False",
+    "estimated_date": "2024-03-17"
+  },
+  {
+    "problem_id": "3095",
+    "problem_slug": "shortest-subarray-with-or-at-least-k-i",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def minimumSubarrayLength(self, nums: List[int], k: int) -> int:\n        n = len(nums)\n        min_len = float('inf')\n        \n        for i in range(n):\n            current_or = 0\n            for j in range(i, n):\n                current_or |= nums[j]\n                if current_or >= k:\n                    min_len = min(min_len, j - i + 1)\n                    break  # further j will only increase length, not improve\n        \n        return -1 if min_len == float('inf') else min_len",
+    "estimated_date": "2024-03-24"
+  },
+  {
+    "problem_id": "3099",
+    "problem_slug": "harshad-number",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def sumOfTheDigitsOfHarshadNumber(self, x: int) -> int:\n        # Compute sum of digits of x\n        digit_sum = 0\n        temp = x\n        while temp > 0:\n            digit_sum += temp % 10\n            temp //= 10\n        \n        # Check if x is divisible by the sum of its digits\n        if x % digit_sum == 0:\n            return digit_sum\n        else:\n            return -1",
+    "estimated_date": "2024-03-31"
+  },
+  {
+    "problem_id": "3105",
+    "problem_slug": "longest-strictly-increasing-or-strictly-decreasing-subarray",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def longestMonotonicSubarray(self, nums: List[int]) -> int:\n        if not nums:\n            return 0\n        \n        n = len(nums)\n        inc_len = 1  # length of current strictly increasing subarray\n        dec_len = 1  # length of current strictly decreasing subarray\n        max_len = 1\n        \n        for i in range(1, n):\n            if nums[i] > nums[i-1]:\n                inc_len += 1\n                dec_len = 1\n            elif nums[i] < nums[i-1]:\n                dec_len += 1\n                inc_len = 1\n            else:  # equal\n                inc_len = 1\n                dec_len = 1\n            \n            max_len = max(max_len, inc_len, dec_len)\n        \n        return max_len",
+    "estimated_date": "2024-04-07"
+  },
+  {
+    "problem_id": "3107",
+    "problem_slug": "minimum-operations-to-make-median-of-array-equal-to-k",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def minOperationsToMakeMedianK(self, nums: List[int], k: int) -> int:\n        \"\"\"\n        Returns the minimum number of increment/decrement operations needed\n        to make the median of the array equal to k.\n        \"\"\"\n        nums.sort()\n        n = len(nums)\n        m = n // 2                     # index of the larger median (0‑based)\n        \n        ops = 0\n        # Adjust the median element itself\n        ops += abs(nums[m] - k)\n        \n        # Elements to the left of median must be ≤ k\n        for i in range(m):\n            if nums[i] > k:\n                ops += nums[i] - k\n        \n        # Elements to the right of median must be ≥ k\n        for i in range(m + 1, n):\n            if nums[i] < k:\n                ops += k - nums[i]\n                \n        return ops",
+    "estimated_date": "2024-04-07"
+  },
+  {
+    "problem_id": "3109",
+    "problem_slug": "find-the-index-of-permutation",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def getPermutationIndex(self, perm: List[int]) -> int:\n        MOD = 10**9 + 7\n        n = len(perm)\n        # Precompute factorials up to n\n        fact = [1] * (n + 1)\n        for i in range(2, n + 1):\n            fact[i] = (fact[i-1] * i) % MOD\n\n        # Fenwick Tree (Binary Indexed Tree) 1-indexed\n        bit = [0] * (n + 2)\n\n        def bit_add(idx: int, delta: int) -> None:\n            while idx <= n:\n                bit[idx] += delta\n                idx += idx & -idx\n\n        def bit_sum(idx: int) -> int:\n            s = 0\n            while idx > 0:\n                s += bit[idx]\n                idx -= idx & -idx\n            return s\n\n        # Initialize BIT with all numbers 1..n present\n        for num in range(1, n + 1):\n            bit_add(num, 1)\n\n        result = 0\n        for i, val in enumerate(perm):\n            # count of remaining numbers smaller than val\n            smaller = bit_sum(val - 1)\n            # contribution of choosing a smaller number at this position\n            result = (result + smaller * fact[n - i - 1]) % MOD\n            # remove val from the set of unused numbers\n            bit_add(val, -1)\n\n        return result",
+    "estimated_date": "2024-04-07"
+  },
+  {
+    "problem_id": "3110",
+    "problem_slug": "score-of-a-string",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def scoreOfString(self, s: str) -> int:\n        \"\"\"\n        Returns the score of the string defined as the sum of absolute differences\n        between ASCII values of adjacent characters.\n        \"\"\"\n        total = 0\n        for i in range(len(s) - 1):\n            total += abs(ord(s[i]) - ord(s[i + 1]))\n        return total",
+    "estimated_date": "2024-04-07"
+  },
+  {
+    "problem_id": "3120",
+    "problem_slug": "count-the-number-of-special-characters-i",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def numberOfSpecialChars(self, word: str) -> int:\n        # Sets to store distinct lowercase and uppercase letters present\n        lower_set = set()\n        upper_set = set()\n        \n        # Populate sets\n        for ch in word:\n            if ch.islower():\n                lower_set.add(ch)\n            else:\n                upper_set.add(ch)\n        \n        # Count letters that appear in both cases\n        count = 0\n        for ch in lower_set:\n            if ch.upper() in upper_set:\n                count += 1\n                \n        return count",
+    "estimated_date": "2024-04-21"
+  },
+  {
+    "problem_id": "3136",
+    "problem_slug": "valid-word",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def isValid(self, word: str) -> bool:\n        # Check minimum length\n        if len(word) < 3:\n            return False\n        \n        # Define vowels (both cases)\n        vowels = set('aeiouAEIOU')\n        \n        has_vowel = False\n        has_consonant = False\n        \n        # Iterate through each character\n        for ch in word:\n            # Check if character is alphanumeric (digit or letter)\n            if not ch.isalnum():\n                return False\n            \n            # If it's a letter, check if vowel or consonant\n            if ch.isalpha():\n                if ch in vowels:\n                    has_vowel = True\n                else:\n                    has_consonant = True\n        \n        # Must have at least one vowel and one consonant\n        return has_vowel and has_consonant",
+    "estimated_date": "2024-05-05"
+  },
+  {
+    "problem_id": "3141",
+    "problem_slug": "maximum-hamming-distances",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "from collections import deque\nfrom typing import List\n\nclass Solution:\n    def maxHammingDistances(self, nums: List[int], m: int) -> List[int]:\n        full_mask = (1 << m) - 1\n        # unique values in nums\n        values = set(nums)\n        # distance to the nearest point in the set of complements\n        INF = 10**9\n        size = 1 << m\n        dist = [INF] * size\n        q = deque()\n        \n        # initialize with complements of all distinct values\n        for v in values:\n            comp = full_mask ^ v\n            if dist[comp] == INF:\n                dist[comp] = 0\n                q.append(comp)\n        \n        # BFS on the hypercube\n        while q:\n            u = q.popleft()\n            du = dist[u]\n            # flip each bit\n            for i in range(m):\n                v = u ^ (1 << i)\n                if dist[v] > du + 1:\n                    dist[v] = du + 1\n                    q.append(v)\n        \n        # compute answer for each original number\n        return [m - dist[num] for num in nums]",
+    "estimated_date": "2024-05-05"
+  },
+  {
+    "problem_id": "3151",
+    "problem_slug": "special-array-i",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def isArraySpecial(self, nums: List[int]) -> bool:\n        for i in range(len(nums) - 1):\n            if (nums[i] % 2) == (nums[i + 1] % 2):\n                return False\n        return True",
+    "estimated_date": "2024-05-19"
+  },
+  {
+    "problem_id": "3157",
+    "problem_slug": "find-the-level-of-tree-with-minimum-sum",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from collections import deque\nfrom typing import Optional\n\n# Definition for a binary tree node.\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\nclass Solution:\n    def minimumLevel(self, root: Optional[TreeNode]) -> int:\n        if not root:\n            return 0  # problem constraints guarantee at least one node, but safe handling\n        \n        queue = deque([root])\n        min_sum = float('inf')\n        min_level = 1\n        level = 0\n        \n        while queue:\n            level += 1\n            level_sum = 0\n            level_size = len(queue)\n            \n            for _ in range(level_size):\n                node = queue.popleft()\n                level_sum += node.val\n                if node.left:\n                    queue.append(node.left)\n                if node.right:\n                    queue.append(node.right)\n            \n            if level_sum < min_sum:\n                min_sum = level_sum\n                min_level = level\n        \n        return min_level",
+    "estimated_date": "2024-05-19"
+  },
+  {
+    "problem_id": "3162",
+    "problem_slug": "find-the-number-of-good-pairs-i",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def numberOfPairs(self, nums1: List[int], nums2: List[int], k: int) -> int:\n        count = 0\n        for a in nums1:\n            for b in nums2:\n                if a % (b * k) == 0:\n                    count += 1\n        return count",
+    "estimated_date": "2024-05-26"
+  },
+  {
+    "problem_id": "3163",
+    "problem_slug": "string-compression-iii",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def compressedString(self, word: str) -> str:\n        comp = []\n        i = 0\n        n = len(word)\n        while i < n:\n            c = word[i]\n            count = 0\n            # Take at most 9 consecutive same characters\n            while i < n and word[i] == c and count < 9:\n                count += 1\n                i += 1\n            comp.append(str(count) + c)\n        return ''.join(comp)",
+    "estimated_date": "2024-05-26"
+  },
+  {
+    "problem_id": "3164",
+    "problem_slug": "find-the-number-of-good-pairs-ii",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def numberOfPairs(self, nums1: List[int], nums2: List[int], k: int) -> int:\n        # Step 1: find the maximum value of nums1[i] // k among those divisible by k\n        max_val = 0\n        valid_nums1 = []\n        for num in nums1:\n            if num % k == 0:\n                x = num // k\n                if x > max_val:\n                    max_val = x\n                valid_nums1.append(x)\n        if not valid_nums1:\n            return 0\n\n        # Step 2: frequency of nums2 values that are <= max_val\n        freq = [0] * (max_val + 1)\n        for num in nums2:\n            if num <= max_val:\n                freq[num] += 1\n\n        # Step 3: divisor counting using harmonic series\n        divisor_count = [0] * (max_val + 1)\n        for d in range(1, max_val + 1):\n            if freq[d] > 0:\n                # add freq[d] to all multiples of d\n                for multiple in range(d, max_val + 1, d):\n                    divisor_count[multiple] += freq[d]\n\n        # Step 4: sum over valid nums1 values\n        total = 0\n        for x in valid_nums1:\n            total += divisor_count[x]\n\n        return total",
+    "estimated_date": "2024-05-26"
+  },
+  {
+    "problem_id": "3167",
+    "problem_slug": "better-compression-of-string",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def betterCompression(self, compressed: str) -> str:\n        # Frequency array for 26 lowercase letters\n        freq = [0] * 26\n        n = len(compressed)\n        i = 0\n        \n        while i < n:\n            # The character at position i\n            ch = compressed[i]\n            i += 1\n            \n            # Read the frequency (one or more digits)\n            count = 0\n            while i < n and compressed[i].isdigit():\n                count = count * 10 + int(compressed[i])\n                i += 1\n            \n            # Add to the total for this character\n            freq[ord(ch) - ord('a')] += count\n        \n        # Build the result string in alphabetical order\n        result_parts = []\n        for idx in range(26):\n            if freq[idx] > 0:\n                letter = chr(ord('a') + idx)\n                result_parts.append(letter + str(freq[idx]))\n        \n        return ''.join(result_parts)",
+    "estimated_date": "2024-05-26"
+  },
+  {
+    "problem_id": "3168",
+    "problem_slug": "minimum-number-of-chairs-in-a-waiting-room",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def minimumChairs(self, s: str) -> int:\n        # Initialize current number of people and the maximum seen so far\n        current_people = 0\n        max_people = 0\n        \n        # Simulate the events\n        for event in s:\n            if event == 'E':\n                current_people += 1\n            else:  # event == 'L'\n                current_people -= 1\n            # Update the maximum number of people simultaneously present\n            max_people = max(max_people, current_people)\n        \n        return max_people",
+    "estimated_date": "2024-06-02"
+  },
+  {
+    "problem_id": "3169",
+    "problem_slug": "count-days-without-meetings",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def countDays(self, days: int, meetings: List[List[int]]) -> int:\n        if not meetings:\n            return days\n        \n        # Sort meetings by start day\n        meetings.sort(key=lambda x: x[0])\n        \n        merged = []\n        current_start, current_end = meetings[0]\n        \n        for start, end in meetings[1:]:\n            if start <= current_end + 1:  # overlapping or adjacent (merge to avoid gaps)\n                current_end = max(current_end, end)\n            else:\n                merged.append([current_start, current_end])\n                current_start, current_end = start, end\n        \n        # Don't forget the last interval\n        merged.append([current_start, current_end])\n        \n        # Calculate total covered days\n        covered = 0\n        for s, e in merged:\n            covered += (e - s + 1)\n        \n        return days - covered",
+    "estimated_date": "2024-06-02"
+  },
+  {
+    "problem_id": "3171",
+    "problem_slug": "find-subarray-with-bitwise-or-closest-to-k",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def minimumDifference(self, nums: List[int], k: int) -> int:\n        # Set of distinct OR values for subarrays ending at the previous index\n        prev_or = set()\n        # Initialize with a large number\n        min_diff = float('inf')\n        \n        for num in nums:\n            curr_or = set()\n            # Subarray consisting of only the current element\n            curr_or.add(num)\n            # Extend all previous subarrays with the current element\n            for val in prev_or:\n                new_val = val | num\n                curr_or.add(new_val)\n            \n            # Update the minimum absolute difference\n            for val in curr_or:\n                diff = abs(k - val)\n                if diff < min_diff:\n                    min_diff = diff\n                    if min_diff == 0:   # Early exit if we hit the exact target\n                        return 0\n            \n            # Move to the next position\n            prev_or = curr_or\n        \n        return min_diff",
+    "estimated_date": "2024-06-02"
+  },
+  {
+    "problem_id": "3173",
+    "problem_slug": "bitwise-or-of-adjacent-elements",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def orArray(self, nums: List[int]) -> List[int]:\n        # Compute bitwise OR for each adjacent pair\n        return [nums[i] | nums[i + 1] for i in range(len(nums) - 1)]",
+    "estimated_date": "2024-06-02"
+  },
+  {
+    "problem_id": "3174",
+    "problem_slug": "clear-digits",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def clearDigits(self, s: str) -> str:\n        stack = []\n        for ch in s:\n            if ch.isdigit():\n                # Remove the closest non-digit to the left (if any)\n                if stack:\n                    stack.pop()\n                # If stack is empty, the digit is ignored (should not happen per constraints)\n            else:\n                stack.append(ch)\n        return ''.join(stack)",
+    "estimated_date": "2024-06-02"
+  },
+  {
+    "problem_id": "3178",
+    "problem_slug": "find-the-child-who-has-the-ball-after-k-seconds",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def numberOfChild(self, n: int, k: int) -> int:\n        # Full cycle length: from 0 to n-1 and back to 0\n        cycle = 2 * (n - 1)\n        # Effective steps within one cycle\n        r = k % cycle\n        if r <= n - 1:\n            # Moving right from 0\n            return r\n        else:\n            # Moving left from n-1\n            return 2 * (n - 1) - r",
+    "estimated_date": "2024-06-09"
+  },
+  {
+    "problem_id": "3179",
+    "problem_slug": "find-the-n-th-value-after-k-seconds",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "class Solution:\n    def valueAfterKSeconds(self, n: int, k: int) -> int:\n        MOD = 10**9 + 7\n        # total number of elements needed for factorial\n        N = n + k - 1\n        \n        # factorial array\n        fact = [1] * (N + 1)\n        for i in range(1, N + 1):\n            fact[i] = fact[i-1] * i % MOD\n        \n        # inverse factorial array using Fermat's little theorem\n        inv_fact = [1] * (N + 1)\n        inv_fact[N] = pow(fact[N], MOD - 2, MOD)\n        for i in range(N, 0, -1):\n            inv_fact[i-1] = inv_fact[i] * i % MOD\n        \n        # combination C(N, k) = C(n+k-1, k)\n        # Here N - k = n-1\n        ans = fact[N] * inv_fact[k] % MOD\n        ans = ans * inv_fact[n-1] % MOD\n        return ans",
+    "estimated_date": "2024-06-09"
+  },
+  {
+    "problem_id": "3184",
+    "problem_slug": "count-pairs-that-form-a-complete-day-i",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\nfrom collections import defaultdict\n\nclass Solution:\n    def countCompleteDayPairs(self, hours: List[int]) -> int:\n        freq = defaultdict(int)\n        pairs = 0\n        \n        for h in hours:\n            r = h % 24\n            complement = (24 - r) % 24\n            # Count pairs with previously seen hours that have the required complement\n            pairs += freq[complement]\n            # Update frequency of current remainder\n            freq[r] += 1\n        \n        return pairs",
+    "estimated_date": "2024-06-16"
+  },
+  {
+    "problem_id": "3187",
+    "problem_slug": "peaks-in-array",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def countOfPeaks(self, nums: List[int], queries: List[List[int]]) -> List[int]:\n        n = len(nums)\n        # Fenwick tree (1-indexed)\n        bit = [0] * (n + 2)  # enough for indices 1..n\n        \n        def _add(idx, delta):\n            i = idx + 1  # convert to 1-indexed\n            while i <= n:\n                bit[i] += delta\n                i += i & -i\n        \n        def _sum(idx):\n            # sum from 0 to idx inclusive (0-indexed)\n            i = idx + 1\n            s = 0\n            while i > 0:\n                s += bit[i]\n                i -= i & -i\n            return s\n        \n        def _range_sum(l, r):\n            if l > r: return 0\n            return _sum(r) - _sum(l-1)\n        \n        # is_peak array (boolean) only for indices 1..n-2\n        is_peak = [False] * n\n        \n        def check_peak(i):\n            return 1 <= i <= n-2 and nums[i] > nums[i-1] and nums[i] > nums[i+1]\n        \n        # initial build\n        for i in range(1, n-1):\n            if check_peak(i):\n                is_peak[i] = True\n                _add(i, 1)\n        \n        ans = []\n        for q in queries:\n            if q[0] == 1:\n                l, r = q[1], q[2]\n                # three or more elements needed for a peak\n                if r - l >= 2:\n                    cnt = _range_sum(l+1, r-1)\n                else:\n                    cnt = 0\n                ans.append(cnt)\n            else:\n                idx, val = q[1], q[2]\n                if nums[idx] == val:\n                    continue\n                nums[idx] = val\n                # update possible peaks at idx-1, idx, idx+1\n                for i in (idx-1, idx, idx+1):\n                    if 1 <= i <= n-2:\n                        new_peak = check_peak(i)\n                        if new_peak != is_peak[i]:\n                            if new_peak:\n                                _add(i, 1)\n                            else:\n                                _add(i, -1)\n                            is_peak[i] = new_peak\n        return ans",
+    "estimated_date": "2024-06-16"
+  },
+  {
+    "problem_id": "3195",
+    "problem_slug": "find-the-minimum-area-to-cover-all-ones-i",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def minimumArea(self, grid: List[List[int]]) -> int:\n        rows = len(grid)\n        cols = len(grid[0])\n        \n        # Initialize bounds to opposite extremes\n        min_row = rows\n        max_row = -1\n        min_col = cols\n        max_col = -1\n        \n        # Scan the grid to find the extreme positions of 1's\n        for r in range(rows):\n            for c in range(cols):\n                if grid[r][c] == 1:\n                    if r < min_row:\n                        min_row = r\n                    if r > max_row:\n                        max_row = r\n                    if c < min_col:\n                        min_col = c\n                    if c > max_col:\n                        max_col = c\n        \n        # Calculate height and width of the bounding rectangle\n        height = max_row - min_row + 1\n        width = max_col - min_col + 1\n        \n        # Area = height * width\n        return height * width",
+    "estimated_date": "2024-06-23"
+  },
+  {
+    "problem_id": "3199",
+    "problem_slug": "count-triplets-with-even-xor-set-bits-i",
+    "difficulty": "Easy",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def tripletCount(self, a: List[int], b: List[int], c: List[int]) -> int:\n        def parity(x: int) -> int:\n            # Returns 1 if number of set bits is odd, 0 otherwise\n            return x.bit_count() & 1\n\n        # Count numbers with even and odd parity in each array\n        a_even = sum(1 for x in a if parity(x) == 0)\n        a_odd = len(a) - a_even\n        b_even = sum(1 for x in b if parity(x) == 0)\n        b_odd = len(b) - b_even\n        c_even = sum(1 for x in c if parity(x) == 0)\n        c_odd = len(c) - c_even\n\n        # Triplets with an even number of odd-parity numbers (0 or 2 odds)\n        result = (a_even * b_even * c_even) + \\\n                 (a_even * b_odd * c_odd) + \\\n                 (a_odd * b_even * c_odd) + \\\n                 (a_odd * b_odd * c_even)\n        return result",
+    "estimated_date": "2024-06-23"
+  },
+  {
+    "problem_id": "3205",
+    "problem_slug": "maximum-array-hopping-score-i",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def maxScore(self, nums: List[int]) -> int:\n        n = len(nums)\n        # dp[i] = maximum score starting from index i to reach the last element\n        dp = [0] * n\n        # Base: last index has no further score\n        dp[n - 1] = 0\n        \n        # Fill dp from right to left\n        for i in range(n - 2, -1, -1):\n            best = 0\n            # Try all possible next hops j > i\n            for j in range(i + 1, n):\n                score = (j - i) * nums[j] + dp[j]\n                if score > best:\n                    best = score\n            dp[i] = best\n        \n        return dp[0]",
+    "estimated_date": "2024-06-30"
+  },
+  {
+    "problem_id": "3209",
+    "problem_slug": "number-of-subarrays-with-and-value-of-k",
+    "difficulty": "Hard",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def countSubarrays(self, nums: List[int], k: int) -> int:\n        \"\"\"\n        Returns the number of subarrays where the bitwise AND of all elements equals k.\n        \"\"\"\n        result = 0\n        # prev_ands: list of (AND_value, count) for subarrays ending at previous index\n        prev_ands = []\n        \n        for num in nums:\n            # Start with the subarray consisting of only the current element\n            cur_val = num\n            cur_cnt = 1\n            new_ands = []\n            \n            # Merge with subarrays ending at previous index\n            for val, cnt in prev_ands:\n                new_val = val & num\n                if new_val == cur_val:\n                    cur_cnt += cnt\n                else:\n                    new_ands.append((cur_val, cur_cnt))\n                    cur_val = new_val\n                    cur_cnt = cnt\n            \n            # Append the last run\n            new_ands.append((cur_val, cur_cnt))\n            \n            # Count how many subarrays ending at current index have AND == k\n            for val, cnt in new_ands:\n                if val == k:\n                    result += cnt\n            \n            # Update for next iteration\n            prev_ands = new_ands\n        \n        return result",
+    "estimated_date": "2024-06-30"
+  },
+  {
+    "problem_id": "3215",
+    "problem_slug": "count-triplets-with-even-xor-set-bits-ii",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List\n\nclass Solution:\n    def tripletCount(self, a: List[int], b: List[int], c: List[int]) -> int:\n        def count_parity(arr):\n            even = odd = 0\n            for num in arr:\n                if bin(num).count('1') % 2 == 0:\n                    even += 1\n                else:\n                    odd += 1\n            return even, odd\n        \n        a_even, a_odd = count_parity(a)\n        b_even, b_odd = count_parity(b)\n        c_even, c_odd = count_parity(c)\n        \n        # XOR of three numbers has even parity if:\n        # - all three have even parity, or\n        # - exactly two have odd parity and one has even parity\n        return (a_even * b_even * c_even) + \\\n               (a_even * b_odd * c_odd) + \\\n               (a_odd * b_even * c_odd) + \\\n               (a_odd * b_odd * c_even)",
+    "estimated_date": "2024-07-07"
+  },
+  {
+    "problem_id": "3217",
+    "problem_slug": "delete-nodes-from-linked-list-present-in-array",
+    "difficulty": "Medium",
+    "language": "python3",
+    "generated_code": "from typing import List, Optional\n\n# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\n\nclass Solution:\n    def modifiedList(self, nums: List[int], head: Optional[ListNode]) -> Optional[ListNode]:\n        # Convert nums to a set for O(1) lookups\n        to_remove = set(nums)\n        \n        # Dummy node simplifies edge case where head itself is removed\n        dummy = ListNode(0, head)\n        prev = dummy\n        curr = head\n        \n        while curr:\n            if curr.val in to_remove:\n                # Skip the current node\n                prev.next = curr.next\n            else:\n                # Move prev forward only when node is kept\n                prev = curr\n            # Move to next node\n            curr = curr.next\n        \n        return dummy.next",
+    "estimated_date": "2024-07-14"
+  }
+]

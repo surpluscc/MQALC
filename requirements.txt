@@ -1,0 +1,7 @@
+tqdm
+fire
+numpy
+tempdir
+wget
+appdirs
+radon>=6.0.1
