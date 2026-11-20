@@ -4,16 +4,12 @@ import pandas as pd
 # ==========================================
 # 1. 数据准备 (Data Preparation)
 # ==========================================
-models = ["Reference Answer", "Chatgpt-3.5-turbo", "Chatgpt-5.1-推理", "Chatgpt-5.1-不推理", "Deepseek-v3.2"]
-indicators = ["执行时间", "峰值内存", "认知复杂度CoC", "可维护性MI"]
+models = []
+indicators = []
 
 # 原始数据矩阵
 raw_data = np.array([
-    [0.019942, 0.9485, 5.52, 68.88],  # Reference Answer
-    [0.034703, 0.9836, 5.58, 71.68],  # Chatgpt-3.5-turbo
-    [0.028171, 1.0210, 7.32, 66.26],  # Chatgpt-5.1-推理
-    [0.021771, 1.0244, 7.65, 69.48],  # Chatgpt-5.1-不推理
-    [0.025434, 0.9005, 7.15, 64.06]   # Deepseek-v3.2
+
 ])
 
 df_raw = pd.DataFrame(raw_data, index=models, columns=indicators)
