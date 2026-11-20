@@ -1,0 +1,6 @@
+{
+  "source": "solution.py",
+  "entry_point": "Solution.total",
+  "args": [[1, 2, 3, 4]],
+  "kwargs": {}
+}

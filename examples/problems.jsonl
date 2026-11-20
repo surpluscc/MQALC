@@ -1,0 +1,1 @@
+{"task_id":"toy-total","prompt":"","entry_point":"Solution().total","test":"def check(candidate):\n    assert candidate([1, 2, 3, 4]) == 10\n    assert candidate([]) == 0\n    assert candidate([-1, 1]) == 0"}

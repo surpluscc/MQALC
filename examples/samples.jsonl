@@ -1,0 +1,1 @@
+{"task_id":"toy-total","completion":"class Solution:\n    def total(self, values):\n        return sum(values)"}
