@@ -1,0 +1,111 @@
+{
+  "release_scope": "Independent metric measurement utilities",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 67,
+      "sha256": "db413537c61b7f5d73717c130c7cf8e248fabf52939922c9afbf9fc0113e98df"
+    },
+    {
+      "path": "README.md",
+      "bytes": 5794,
+      "sha256": "8d53e33eba6d922975a479052104c1b339f17a63b3d57d5bd171d59a59f70d12"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "bytes": 1036,
+      "sha256": "7fc7c1c6ab0ddaaae6305b5cadaabe95df05623e1301b1f0ad1fd1269818b098"
+    },
+    {
+      "path": "requirements.txt",
+      "bytes": 28,
+      "sha256": "dab15b71dd10cc4adb36974125fb05732c34d9b9f9116bd88b28ea3c352834fb"
+    },
+    {
+      "path": "requirements-coc.txt",
+      "bytes": 15,
+      "sha256": "fd906255e80b8cb19ca2c0ceab323032559d6ea3a21d2a0d5761c66f4608fbf0"
+    },
+    {
+      "path": "metrics/__init__.py",
+      "bytes": 48,
+      "sha256": "3a49396a5a576b8bd14ff3e17078a778f2e9cff1ee4c8d635826a06cd8cf4dae"
+    },
+    {
+      "path": "metrics/common.py",
+      "bytes": 687,
+      "sha256": "84ed3e3b715039d2c18e7cf058d00c8f8c4a91077bc0ad40bf23106f831f1519"
+    },
+    {
+      "path": "metrics/maintainability.py",
+      "bytes": 1614,
+      "sha256": "e13a6d062a8713676d6e2c0b176a5ef41bbb6345a41a82c76b37501d140fc98e"
+    },
+    {
+      "path": "metrics/cognitive.py",
+      "bytes": 2431,
+      "sha256": "a2cc195ba4ee100d9638fd370a95a78adf1d32e571b03c00f3874f94e1aa8228"
+    },
+    {
+      "path": "metrics/performance.py",
+      "bytes": 4870,
+      "sha256": "ac5dbac31ffd20bd017a3ddf8e4fe58c3ef07324ac81ac6a9332364f69a163c0"
+    },
+    {
+      "path": "metrics/correctness.py",
+      "bytes": 2788,
+      "sha256": "106c516c51e69f71ddd1e4e6304fb7931e2b831598cb23231773a83a1903f967"
+    },
+    {
+      "path": "metrics/agreement.py",
+      "bytes": 1294,
+      "sha256": "1633c6ffd545046943edfe4ecc424a6c0195e78880da42ead0f39049e0ebe34c"
+    },
+    {
+      "path": "third_party/__init__.py",
+      "bytes": 64,
+      "sha256": "69b1a38a58f7c759bb3073bb6fee3701574dfe8f04ce4aa2a40a41b9c2904c84"
+    },
+    {
+      "path": "third_party/lcd_execution.py",
+      "bytes": 6093,
+      "sha256": "c3167c143c856b9d6c53bfe17b6b31750f7d037c2c1fb50235ecfe14b4d79949"
+    },
+    {
+      "path": "third_party/LICENSE.LeetCodeDataset",
+      "bytes": 1066,
+      "sha256": "4bd8336efa77d209f62a1208961ea774c05ed09500465ca1f609b36615b24551"
+    },
+    {
+      "path": "examples/solution.py",
+      "bytes": 147,
+      "sha256": "501c6e1777c75f8f3dc0ed7139736f2a77c650abc07b762e5c4a4aa11d80a7ad"
+    },
+    {
+      "path": "examples/performance_case.json",
+      "bytes": 107,
+      "sha256": "ab133cbc85db1921a9f642c26c1ae4a054a60d3c3bc28a2867a2986fac74e88a"
+    },
+    {
+      "path": "examples/problems.jsonl",
+      "bytes": 209,
+      "sha256": "a898850d6564d6d77be83c3c4d9cb99bc9a478543d76b6689b3a649778ff08b4"
+    },
+    {
+      "path": "examples/samples.jsonl",
+      "bytes": 113,
+      "sha256": "f3e1e553acf637eb0fdcfd1464ebe17399bb37d05a7c704e255566853fd8df73"
+    },
+    {
+      "path": "examples/ranks.json",
+      "bytes": 57,
+      "sha256": "735ee17b6d15918fcbf9eb2ff7475eadea200b05e3a052b4b9a37ff2d1520bc6"
+    },
+    {
+      "path": "tests/test_metrics.py",
+      "bytes": 4277,
+      "sha256": "453dcce3e98324416eaca66d08ea61a3f58314a2b28145ac2eff0a255753ec41"
+    }
+  ],
+  "manifest_note": "This manifest does not hash itself."
+}
