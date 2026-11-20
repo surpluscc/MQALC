@@ -14,7 +14,7 @@ client = OpenAI(
     base_url=""
 )
 
-def get_chatgpt_response(prompt, model='glm-5.2', temperature=0):
+def get_chatgpt_response(prompt, model='', temperature=):
     """
     Returns the response from ChatGPT for a given prompt
     """
